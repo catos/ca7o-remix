@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { Database } from "types/supabase";
 
 import stylesheet from "~/tailwind.css";
+import { Button } from "./components/ui/button";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -105,6 +106,9 @@ export default function App() {
             </li>
             <li>
               <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Button>Click me</Button>
             </li>
           </ul>
         </nav>

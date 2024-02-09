@@ -1,5 +1,5 @@
-import { json } from "@remix-run/node";
-import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node"
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node"
 import {
   Link,
   Links,
@@ -10,28 +10,33 @@ import {
   ScrollRestoration,
   useLoaderData,
   useRevalidator,
-} from "@remix-run/react";
+} from "@remix-run/react"
 import {
   createBrowserClient,
   createServerClient,
-} from "@supabase/auth-helpers-remix";
-import { useEffect, useState } from "react";
-import { Database } from "types/supabase";
+} from "@supabase/auth-helpers-remix"
+import { useEffect, useState } from "react"
+import { Database } from "types/supabase"
 
-import stylesheet from "~/tailwind.css";
-import { Button } from "./components/ui/button";
+import stylesheet from "~/tailwind.css"
+import { themeSessionResolver } from "./sessions.server"
+import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
+import clsx from "clsx"
+import { ModeToggle } from "./components/mode-toggle"
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
-];
+]
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const { getTheme } = await themeSessionResolver(request)
+
   const env = {
     SUPABASE_URL: process.env.SUPABASE_URL!,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
-  };
+  }
 
-  const response = new Response();
+  const response = new Response()
 
   const supabase = createServerClient(
     process.env.SUPABASE_URL!,
@@ -40,33 +45,46 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       request,
       response,
     }
-  );
+  )
 
   const {
     data: { session },
-  } = await supabase.auth.getSession();
+  } = await supabase.auth.getSession()
 
   return json(
     {
       env,
       session,
+      theme: getTheme(),
     },
     {
       headers: response.headers,
     }
-  );
-};
+  )
+}
 
-export default function App() {
-  const { env, session } = useLoaderData<typeof loader>();
-  const { revalidate } = useRevalidator();
+export default function AppWithProviders() {
+  const data = useLoaderData<typeof loader>()
+  return (
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+      <App />
+    </ThemeProvider>
+  )
+}
+
+export function App() {
+  const data = useLoaderData<typeof loader>()
+  const [theme] = useTheme()
 
   const [supabase] = useState(() =>
-    createBrowserClient<Database>(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
-  );
+    createBrowserClient<Database>(
+      data.env.SUPABASE_URL,
+      data.env.SUPABASE_ANON_KEY
+    )
+  )
 
-  const serverAccessToken = session?.access_token;
-
+  const serverAccessToken = data.session?.access_token
+  const { revalidate } = useRevalidator()
   useEffect(() => {
     const {
       data: { subscription },
@@ -76,43 +94,44 @@ export default function App() {
         session?.access_token !== serverAccessToken
       ) {
         // server and client are out of sync.
-        revalidate();
+        revalidate()
       }
-    });
+    })
 
     return () => {
-      subscription.unsubscribe();
-    };
-  }, [serverAccessToken, supabase, revalidate]);
+      subscription.unsubscribe()
+    }
+  }, [serverAccessToken, supabase, revalidate])
 
-  console.log("session", session);
+  console.log("session", data.session)
 
   return (
-    <html lang="en">
+    <html lang="en" className={clsx(theme)}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
+        <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
-      <body>
-        <nav className="p-4 bg-slate-300">
-          <ul className="flex gap-4">
+      <body className="bg-background text-foreground">
+        <nav className="py-2 px-4 border-b">
+          <ul className="flex items-center gap-4">
             <li>
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/recipes">Recipes</Link>
             </li>
-            <li>
+            <li className="ml-auto">
               <Link to="/login">Login</Link>
             </li>
             <li>
-              <Button>Click me</Button>
+              <ModeToggle />
             </li>
           </ul>
         </nav>
-        <main>
+        <main className="p-4">
           <Outlet context={{ supabase }} />
         </main>
         <ScrollRestoration />
@@ -120,5 +139,5 @@ export default function App() {
         <LiveReload />
       </body>
     </html>
-  );
+  )
 }

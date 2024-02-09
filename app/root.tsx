@@ -1,7 +1,7 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
 import { json } from "@remix-run/node";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -18,8 +18,10 @@ import {
 import { useEffect, useState } from "react";
 import { Database } from "types/supabase";
 
+import stylesheet from "~/tailwind.css";
+
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  { rel: "stylesheet", href: stylesheet },
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -84,24 +86,6 @@ export default function App() {
 
   console.log("session", session);
 
-  //   const signUp = () => {
-  //     supabase.auth.signUp({
-  //       email: "test@test.com",
-  //       password: "secret123",
-  //     });
-  //   };
-
-  //   const signIn = () => {
-  //     supabase.auth.signInWithPassword({
-  //       email: "test@test.com",
-  //       password: "secret123",
-  //     });
-  //   };
-
-  //   const signOut = () => {
-  //     supabase.auth.signOut();
-  //   };
-
   return (
     <html lang="en">
       <head>
@@ -111,10 +95,22 @@ export default function App() {
         <Links />
       </head>
       <body>
-        {/* <button onClick={signUp}>Sign Up</button>
-        <button onClick={signIn}>Sign In</button>
-        <button onClick={signOut}>Sign Out</button> */}
-        <Outlet context={{ supabase }} />
+        <nav className="p-4 bg-slate-300">
+          <ul className="flex gap-4">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+          </ul>
+        </nav>
+        <main>
+          <Outlet context={{ supabase }} />
+        </main>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

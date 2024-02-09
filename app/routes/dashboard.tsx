@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { createServerClient } from "@supabase/auth-helpers-remix";
-import { Database, Tables } from "types/supabase";
+import { Database } from "types/supabase";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const response = new Response();
@@ -28,7 +28,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <h1>Dashboard</h1>
+      <h1 className="text-3xl font-bold underline">Hello world!</h1>
       <ul>
         {data.map((recipe: Recipe) => (
           <li key={recipe.id}>{recipe.title}</li>

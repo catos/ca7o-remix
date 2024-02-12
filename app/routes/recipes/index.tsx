@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { Link, useLoaderData } from "@remix-run/react"
 import { createServerClient } from "@supabase/auth-helpers-remix"
 import { Database } from "types/supabase"
 
@@ -28,10 +28,12 @@ export default function Dashboard() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <h1 className="text-3xl font-bold underline">Hello world! ... index</h1>
       <ul>
         {data.map((recipe: Recipe) => (
-          <li key={recipe.id}>{recipe.title}</li>
+          <li key={recipe.id}>
+            <Link to={`recipes/${recipe.id}`}>{recipe.title}</Link>
+          </li>
         ))}
       </ul>
     </>

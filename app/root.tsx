@@ -1,7 +1,6 @@
 import { json } from "@remix-run/node"
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node"
 import {
-  Link,
   Links,
   LiveReload,
   Meta,
@@ -23,6 +22,7 @@ import { themeSessionResolver } from "./sessions.server"
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
 import clsx from "clsx"
 import { ModeToggle } from "./components/mode-toggle"
+import NavLink from "./components/ui/nav-link"
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -118,13 +118,16 @@ export function App() {
         <nav className="py-2 px-4 border-b">
           <ul className="flex items-center gap-4">
             <li>
-              <Link to="/">Home</Link>
+              <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <Link to="/recipes">Recipes</Link>
+              <NavLink to="/recipes">Recipes</NavLink>
+            </li>
+            <li>
+              <NavLink to="/about">About</NavLink>
             </li>
             <li className="ml-auto">
-              <Link to="/login">Login</Link>
+              <NavLink to="/login">Login</NavLink>
             </li>
             <li>
               <ModeToggle />

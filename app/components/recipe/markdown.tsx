@@ -54,7 +54,7 @@ const serializers = {
   //   },
 
   p: ({ children }: any) => {
-    return <p className="m-0">{children}</p>
+    return <p className="mb-2 leading-relaxed">{children}</p>
   },
 
   code: (props: any) => {

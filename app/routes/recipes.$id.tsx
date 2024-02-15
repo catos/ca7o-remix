@@ -64,17 +64,25 @@ export default function Recipe() {
 
       <div className="flex flex-col gap-4 sm:flex-row">
         <section className="rounded-md sm:w-1/2 md:w-5/12 bg-foreground/10 p-4">
-          <Heading as="h2" className="uppercase text-foreground/50 text-lg">
+          <Heading
+            as="h2"
+            className="uppercase text-foreground/60 text-lg mb-2"
+          >
             Ingrendienser
           </Heading>
           <Markdown>{recipe.ingredients}</Markdown>
         </section>
 
         <section className="rounded-md sm:w-1/2 md:w-7/12 bg-foreground/10 p-4">
-          <Heading as="h2" className="uppercase text-foreground/50 text-lg">
+          <Heading
+            as="h2"
+            className="uppercase text-foreground/60 text-lg mb-2"
+          >
             Slik gjør du
           </Heading>
-          <Markdown>{recipe.instructions}</Markdown>
+          <div className="flex flex-col gap-4">
+            <Markdown>{recipe.instructions}</Markdown>
+          </div>
         </section>
       </div>
     </div>

@@ -103,7 +103,7 @@ export function App() {
     }
   }, [serverAccessToken, supabase, revalidate])
 
-  console.log("session", data.session)
+  // TODO: do something useful with this ?  console.log("session", data.session)
 
   return (
     <html lang="en" className={clsx(theme)}>

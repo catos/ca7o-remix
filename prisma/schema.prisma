@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Favorite {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  recipeId Int
+  Recipe   Recipe @relation(fields: [recipeId], references: [id])
+  User     User   @relation(fields: [userId], references: [id])
+}
+
+model Recipe {
+  id           Int        @id @default(autoincrement())
+  title        String
+  description  String?
+  ingredients  String?
+  instructions String?
+  authorId     Int?
+  image        String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?
+  Favorite     Favorite[]
+  User         User?      @relation(fields: [authorId], references: [id])
+}
+
+model Todo {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  content   String?
+  authorId  Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  state     Int      @default(0)
+  User      User?    @relation(fields: [authorId], references: [id])
+}
+
+model User {
+  id       Int        @id @default(autoincrement())
+  email    String     @unique
+  name     String?
+  password String
+  avatar   String?
+  Favorite Favorite[]
+  Recipe   Recipe[]
+  Todo     Todo[]
+}

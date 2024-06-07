@@ -4,7 +4,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
+  isRouteErrorResponse,
+  useRouteError,
+} from "@remix-run/react"
+
+export type MyOutletContext = {
+  lol: string
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,13 +23,37 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        <ScrollRestoration />
         <Scripts />
+        <ScrollRestoration />
       </body>
     </html>
-  );
+  )
 }
 
 export default function App() {
-  return <Outlet />;
+  const lol = "lolerdk"
+
+  return <Outlet context={{ lol }} />
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <h1>Error!</h1>
+      <p>{(error as Error)?.message ?? "Unknown error"}</p>
+    </>
+  )
 }

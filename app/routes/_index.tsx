@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node"
-import { useOutletContext } from "@remix-run/react"
+import { Outlet, useOutletContext } from "@remix-run/react"
 import { MyOutletContext } from "~/root"
 
 export const meta: MetaFunction = () => {
@@ -15,6 +15,7 @@ export default function Index() {
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Welcome to Remix</h1>
       <p>Context lol is {lol}</p>
+      <Outlet />
     </div>
   )
 }

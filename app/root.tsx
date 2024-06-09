@@ -7,6 +7,7 @@ import {
   isRouteErrorResponse,
   useRouteError,
 } from "@remix-run/react"
+import { Header } from "./components/header"
 
 export type MyOutletContext = {
   lol: string
@@ -22,6 +23,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <Header />
         {children}
         <Scripts />
         <ScrollRestoration />

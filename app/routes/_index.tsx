@@ -5,7 +5,7 @@ import { MyOutletContext } from "~/root"
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
+    { title: "ca7o deux" },
     { name: "description", content: "Welcome to Remix!" },
   ]
 }

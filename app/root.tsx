@@ -8,9 +8,15 @@ import {
   useRouteError,
 } from "@remix-run/react"
 import { Header } from "./components/header"
+import type { LinksFunction } from "@remix-run/node"
+import stylesheet from "./tailwind.css?url"
 
 export type MyOutletContext = {
   lol: string
+}
+
+export const links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: stylesheet }]
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -23,8 +29,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <Header />
-        {children}
+        <div>
+          <Header />
+          {children}
+        </div>
         <Scripts />
         <ScrollRestoration />
       </body>

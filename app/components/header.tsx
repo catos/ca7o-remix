@@ -1,17 +1,23 @@
+import { Link } from "@remix-run/react"
+import { Logo } from "./logo"
+
 export function Header() {
   return (
-    <header>
-      <span>ca7o</span>
+    <header className="flex items-center gap-2 h-16 bg-background border-b border-primary-300 px-4">
+      <Link className="hover:bg-primary/5 rounded-full mr-4" to="/">
+        <Logo />
+      </Link>
+
       <nav>
-        <ul>
+        <ul className="flex gap-4">
           <li>
-            <a href="/">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <a href="/recipes">Recipes</a>
+            <Link to="/recipes">Recipes</Link>
           </li>
           <li>
-            <a href="/about">About</a>
+            <Link to="/about">About</Link>
           </li>
         </ul>
       </nav>

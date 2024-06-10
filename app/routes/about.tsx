@@ -1,7 +1,9 @@
+import Heading from "~/components/ui/heading"
+
 export default function About() {
   return (
     <div>
-      <h1>About</h1>
+      <Heading>About</Heading>
       <p>About in here</p>
     </div>
   )

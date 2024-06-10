@@ -10,6 +10,7 @@ import {
 import { Header } from "./components/header"
 import type { LinksFunction } from "@remix-run/node"
 import stylesheet from "./tailwind.css?url"
+import Heading from "./components/ui/heading"
 
 export type MyOutletContext = {
   lol: string
@@ -31,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <div>
           <Header />
-          {children}
+          <main className="container mx-auto">{children}</main>
         </div>
         <Scripts />
         <ScrollRestoration />
@@ -62,7 +63,7 @@ export function ErrorBoundary() {
 
   return (
     <>
-      <h1>Error!</h1>
+      <Heading>Error!</Heading>
       <p>{(error as Error)?.message ?? "Unknown error"}</p>
     </>
   )

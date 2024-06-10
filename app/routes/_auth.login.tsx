@@ -1,7 +1,9 @@
+import Heading from "~/components/ui/heading"
+
 export default function Login() {
   return (
     <div>
-      <h1>Login</h1>
+      <Heading>Login</Heading>
       <p>Log in here</p>
     </div>
   )

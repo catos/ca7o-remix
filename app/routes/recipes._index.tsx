@@ -1,7 +1,9 @@
+import Heading from "~/components/ui/heading"
+
 export default function Recipes() {
   return (
     <div>
-      <h1>Recipes</h1>
+      <Heading>Recipes</Heading>
       <p>recipes._index.tsx</p>
     </div>
   )

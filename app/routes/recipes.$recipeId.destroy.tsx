@@ -1,16 +1,12 @@
-import { LoaderFunctionArgs, json } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
+import { ActionFunctionArgs } from "@remix-run/node"
+import { redirect } from "@remix-run/react"
 
-export function loader({ params }: LoaderFunctionArgs) {
-  return json({ recipeId: params.recipeId })
+// TODO: Is there a better way to handle/prevent get requests to this route ?
+export function loader() {
+  return redirect("/recipes")
 }
 
-export default function DeleteRecipe() {
-  const { recipeId } = useLoaderData<typeof loader>()
-  return (
-    <div>
-      <h1>Destroy recipe</h1>
-      <p>Recipe id: {recipeId}</p>
-    </div>
-  )
+export async function action({ params }: ActionFunctionArgs) {
+  console.log("destroying recipe", params.recipeId)
+  return redirect("/recipes")
 }

@@ -1,14 +1,6 @@
-import type { MetaFunction } from "@remix-run/node"
 import { Outlet, useOutletContext } from "@remix-run/react"
 import Heading from "~/components/ui/heading"
 import { MyOutletContext } from "~/root"
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "ca7o deux" },
-    { name: "description", content: "Welcome to Remix!" },
-  ]
-}
 
 export default function Index() {
   const { lol } = useOutletContext<MyOutletContext>()

@@ -8,12 +8,19 @@ import {
   useRouteError,
 } from "@remix-run/react"
 import { Header } from "./components/header"
-import type { LinksFunction } from "@remix-run/node"
+import type { LinksFunction, MetaFunction } from "@remix-run/node"
 import stylesheet from "./tailwind.css?url"
 import Heading from "./components/ui/heading"
 
 export type MyOutletContext = {
   lol: string
+}
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "ca7o deux" },
+    { name: "description", content: "Welcome to Remix!" },
+  ]
 }
 
 export const links: LinksFunction = () => {

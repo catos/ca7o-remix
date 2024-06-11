@@ -1,4 +1,9 @@
-export function Avatar({ src, fallback }: { src?: string; fallback: string }) {
+type Props = {
+  src?: string
+  fallback: string
+}
+
+export function Avatar({ src, fallback }: Props) {
   return (
     <span>
       {src ? (

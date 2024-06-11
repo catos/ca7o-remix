@@ -39,7 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <div>
           <Header />
-          <main className="container mx-auto">{children}</main>
+          <main className="container mx-auto py-4">{children}</main>
         </div>
         <Scripts />
         <ScrollRestoration />

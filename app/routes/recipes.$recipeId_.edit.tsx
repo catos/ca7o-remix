@@ -1,8 +1,8 @@
 import { ActionFunctionArgs } from "@remix-run/node"
 import { Form, redirect } from "@remix-run/react"
 import { Button } from "~/components/ui/button"
-import Heading from "~/components/ui/heading"
-import Input from "~/components/ui/input"
+import { Heading } from "~/components/ui/heading"
+import { Input } from "~/components/ui/input"
 
 export async function action({ params }: ActionFunctionArgs) {
   console.log("edit recipe", params.recipeId)

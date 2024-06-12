@@ -4,22 +4,23 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  isRouteErrorResponse,
-  useRouteError,
+  json,
+  useLoaderData,
 } from "@remix-run/react"
-import { Header } from "./components/header"
-import type { LinksFunction, MetaFunction } from "@remix-run/node"
+import type {
+  LinksFunction,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node"
 import stylesheet from "./tailwind.css?url"
-import Heading from "./components/ui/heading"
-
-export type MyOutletContext = {
-  lol: string
-}
+import { getSupabase, getSupabaseEnv } from "./supabase/supabase.server"
+import { useGetSupabase } from "./supabase/use-get-supabase"
+import { Header } from "./components/header"
 
 export const meta: MetaFunction = () => {
   return [
     { title: "ca7o deux" },
-    { name: "description", content: "Welcome to Remix!" },
+    { name: "description", content: "Welcome to ca7o!" },
   ]
 }
 
@@ -27,7 +28,19 @@ export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesheet }]
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export async function loader({ request }: LoaderFunctionArgs) {
+  const env = getSupabaseEnv()
+  const domainUrl = process.env.DOMAIN_URL
+  const { session, headers } = await getSupabase({ request })
+
+  return json({ domainUrl, env, session }, { headers })
+}
+
+export default function App() {
+  const { domainUrl, env, session } = useLoaderData<typeof loader>()
+
+  const { supabase } = useGetSupabase({ env, session })
+
   return (
     <html lang="en">
       <head>
@@ -37,10 +50,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div>
-          <Header />
-          <main className="container mx-auto py-4">{children}</main>
-        </div>
+        <Header session={session} />
+        <main className="container mx-auto py-4">
+          <Outlet context={{ supabase, domainUrl }} />
+        </main>
         <Scripts />
         <ScrollRestoration />
       </body>
@@ -48,30 +61,48 @@ export function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
-export default function App() {
-  const lol = "lolerdk"
+// TODO: figure out how to correctly implement custom 404 and 500 pages - https://remix.run/docs/en/main/guides/not-found
+// export function ErrorBoundary() {
+//   const error = useRouteError()
 
-  return <Outlet context={{ lol }} />
-}
+//   if (isRouteErrorResponse(error)) {
+//     return (
+//       <>
+//         <h1>
+//           {error.status} {error.statusText}
+//         </h1>
+//         <p>{error.data}</p>
+//       </>
+//     )
+//   }
 
-export function ErrorBoundary() {
-  const error = useRouteError()
+//   return (
+//     <>
+//       <Heading>Error!</Heading>
+//       <p>{(error as Error)?.message ?? "Unknown error"}</p>
+//     </>
+//   )
+// }
 
-  if (isRouteErrorResponse(error)) {
-    return (
-      <>
-        <h1>
-          {error.status} {error.statusText}
-        </h1>
-        <p>{error.data}</p>
-      </>
-    )
-  }
-
-  return (
-    <>
-      <Heading>Error!</Heading>
-      <p>{(error as Error)?.message ?? "Unknown error"}</p>
-    </>
-  )
-}
+// export function ErrorBoundary() {
+//   const error = useRouteError()
+//   return (
+//     <html lang="en">
+//       <head>
+//         <title>Oops!</title>
+//         <Meta />
+//         <Links />
+//       </head>
+//       <body>
+//         <h1>
+//           {isRouteErrorResponse(error)
+//             ? `${error.status} ${error.statusText}`
+//             : error instanceof Error
+//             ? error.message
+//             : "Unknown Error"}
+//         </h1>
+//         <Scripts />
+//       </body>
+//     </html>
+//   )
+// }

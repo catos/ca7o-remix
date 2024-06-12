@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge"
 import { Link } from "./ui/link"
-import Heading from "./ui/heading"
+import { Heading } from "./ui/heading"
 import { snip } from "~/lib/snip"
 import { Heart, Star } from "lucide-react"
 
@@ -15,7 +15,7 @@ type Props = {
   description: string
 }
 
-export default function Card({ image, href, title, isFavorite }: Props) {
+export function RecipeCard({ image, href, title, isFavorite }: Props) {
   return (
     <Link
       className="relative flex flex-col max-h-64 no-underline w-full rounded overflow-hidden shadow-lg hover:outline hover:outline-primary-700 hover:outline-2"

@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node"
 import { Form, Link, useLoaderData } from "@remix-run/react"
 import { Button } from "~/components/ui/button"
-import Heading from "~/components/ui/heading"
+import { Heading } from "~/components/ui/heading"
 
 export function loader({ params }: LoaderFunctionArgs) {
   return json({ recipeId: params.recipeId })

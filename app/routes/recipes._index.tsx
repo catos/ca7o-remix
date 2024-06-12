@@ -1,5 +1,5 @@
-import Card from "~/components/recipe-card"
-import Heading from "~/components/ui/heading"
+import { RecipeCard } from "~/components/recipe-card"
+import { Heading } from "~/components/ui/heading"
 
 const RECIPES = [
   {
@@ -32,7 +32,7 @@ export default function Recipes() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {RECIPES.map((recipe) => (
-          <Card
+          <RecipeCard
             key={recipe.id}
             image={recipe.image}
             href={`/recipes/${recipe.id}`}

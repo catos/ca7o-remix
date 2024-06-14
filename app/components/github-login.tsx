@@ -31,10 +31,13 @@ export function GithubLogin() {
     }
 
     return (
-        <Button
-            className="p-4 relative w-full flex gap-4 items-center"
-            onClick={handleSignIn}>
-            <Github className="h-4 w-4" /> Login with Github
-        </Button>
+        <div>
+            <Button
+                className="p-4 relative w-full flex gap-4 items-center"
+                onClick={handleSignIn}>
+                <Github className="h-4 w-4" /> Login with Github
+            </Button>
+            <p>{`${domainUrl}/auth/callback`}</p>
+        </div>
     )
 }

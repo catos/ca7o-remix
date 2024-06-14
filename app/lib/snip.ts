@@ -5,8 +5,8 @@
  * @returns snipped text
  */
 export function snip(text: string, length: number): string {
-  if (text.length > length) {
-    return text.substring(0, length) + "..."
-  }
-  return text
+    if (text.length > length) {
+        return text.substring(0, length) + "..."
+    }
+    return text
 }

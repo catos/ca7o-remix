@@ -1,0 +1,21 @@
+{
+    "semi": false,
+    "tabWidth": 4,
+    "singleQuote": false,
+    "printWidth": 80,
+    "endOfLine": "auto",
+    "arrowParens": "avoid",
+    "useTabs": false,
+    "bracketSpacing": true,
+    "trailingComma": "none",
+    "bracketSameLine": true,
+    "singleAttributePerLine": true,
+    "importOrder": [
+        "^~/data|lib|supabase/(.*)$",
+        "^~/components/(.*)$",
+        "^~/components/ui/(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
+}

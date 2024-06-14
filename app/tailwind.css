@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 .logo g g {
-  @apply fill-slate-400;
+    @apply fill-slate-400;
 }
 
 .logo g g:nth-child(3) {
-  @apply fill-slate-600;
+    @apply fill-slate-600;
 }

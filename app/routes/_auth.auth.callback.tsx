@@ -1,27 +1,28 @@
-import { redirect, type LoaderFunctionArgs } from "@remix-run/node"
+import { type LoaderFunctionArgs, redirect } from "@remix-run/node"
+
 import { getSupabase } from "~/supabase/supabase.server"
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const requestUrl = new URL(request.url)
-  const code = requestUrl.searchParams.get("code")
-  const next = requestUrl.searchParams.get("next") || "/"
+    const requestUrl = new URL(request.url)
+    const code = requestUrl.searchParams.get("code")
+    const next = requestUrl.searchParams.get("next") || "/"
 
-  console.log("aut.callback", code, next)
+    console.log("aut.callback", code, next)
 
-  if (code) {
-    const { headers, supabase } = await getSupabase({
-      request,
-    })
+    if (code) {
+        const { headers, supabase } = await getSupabase({
+            request
+        })
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+        const { error } = await supabase.auth.exchangeCodeForSession(code)
 
-    console.log("Error: auth callback ", error)
+        console.log("Error: auth callback ", error)
 
-    if (!error) {
-      return redirect(next, { headers })
+        if (!error) {
+            return redirect(next, { headers })
+        }
     }
-  }
 
-  // return the user to an error page with instructions
-  return redirect("/login")
+    // return the user to an error page with instructions
+    return redirect("/login")
 }

@@ -1,64 +1,69 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  json,
-  useLoaderData,
-} from "@remix-run/react"
 import type {
-  LinksFunction,
-  LoaderFunctionArgs,
-  MetaFunction,
+    LinksFunction,
+    LoaderFunctionArgs,
+    MetaFunction
 } from "@remix-run/node"
-import stylesheet from "./tailwind.css?url"
+import {
+    Links,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    json,
+    useLoaderData
+} from "@remix-run/react"
+
 import { getSupabase, getSupabaseEnv } from "./supabase/supabase.server"
 import { useGetSupabase } from "./supabase/use-get-supabase"
+
 import { Header } from "./components/header"
+import stylesheet from "./tailwind.css?url"
 
 export const meta: MetaFunction = () => {
-  return [
-    { title: "ca7o deux" },
-    { name: "description", content: "Welcome to ca7o!" },
-  ]
+    return [
+        { title: "ca7o deux" },
+        { name: "description", content: "Welcome to ca7o!" }
+    ]
 }
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesheet }]
+    return [{ rel: "stylesheet", href: stylesheet }]
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const env = getSupabaseEnv()
-  const domainUrl = process.env.DOMAIN_URL
-  const { session, headers } = await getSupabase({ request })
+    const env = getSupabaseEnv()
+    const domainUrl = process.env.DOMAIN_URL
+    const { session, headers } = await getSupabase({ request })
 
-  return json({ domainUrl, env, session }, { headers })
+    return json({ domainUrl, env, session }, { headers })
 }
 
 export default function App() {
-  const { domainUrl, env, session } = useLoaderData<typeof loader>()
+    const { domainUrl, env, session } = useLoaderData<typeof loader>()
 
-  const { supabase } = useGetSupabase({ env, session })
+    const { supabase } = useGetSupabase({ env, session })
 
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <Header session={session} />
-        <main className="container mx-auto py-4">
-          <Outlet context={{ supabase, domainUrl }} />
-        </main>
-        <Scripts />
-        <ScrollRestoration />
-      </body>
-    </html>
-  )
+    return (
+        <html lang="en">
+            <head>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+                <Meta />
+                <Links />
+            </head>
+            <body>
+                <Header session={session} />
+                <main className="container mx-auto py-4">
+                    <Outlet context={{ supabase, domainUrl }} />
+                </main>
+                <Scripts />
+                <ScrollRestoration />
+            </body>
+        </html>
+    )
 }
 
 // TODO: figure out how to correctly implement custom 404 and 500 pages - https://remix.run/docs/en/main/guides/not-found

@@ -1,55 +1,61 @@
 import { Link } from "@remix-run/react"
-import { Logo } from "./logo"
-import { Avatar } from "./ui/avatar"
+
 import { Session } from "@supabase/supabase-js"
 
-export function Header({ session }: { session: Session | null }) {
-  return (
-    <div className="border-b border-primary-300">
-      <header className="container m-auto flex items-center gap-8 h-16 sticky top-0 z-40 backdrop-blur flex-none transition-colors duration-500">
-        <Link className="hover:bg-primary/5 rounded-full mr-auto" to="/">
-          <Logo />
-        </Link>
+import { Logo } from "./logo"
+import { Avatar } from "./ui/avatar"
 
-        <nav className="text-sm leading-6 font-semibold text-slate-700">
-          <ul className="flex items-center gap-4">
-            <li>
-              <HeaderLink to="/recipes">Recipes</HeaderLink>
-            </li>
-            <li>
-              <HeaderLink to="/notes">Notes</HeaderLink>
-            </li>
-            <li>
-              <HeaderLink to="/about">About</HeaderLink>
-            </li>
-            <li>
-              {session ? (
-                <Link to="/profile">
-                  <Avatar
-                    src="https://avatars.githubusercontent.com/u/1101093?v=4"
-                    fallback="CS"
-                  />
+export function Header({ session }: { session: Session | null }) {
+    return (
+        <div className="border-b border-primary-300">
+            <header className="container m-auto flex items-center gap-8 h-16 sticky top-0 z-40 backdrop-blur flex-none transition-colors duration-500">
+                <Link
+                    className="hover:bg-primary/5 rounded-full mr-auto"
+                    to="/">
+                    <Logo />
                 </Link>
-              ) : (
-                <HeaderLink to="/login">Login</HeaderLink>
-              )}
-            </li>
-          </ul>
-        </nav>
-      </header>
-    </div>
-  )
+
+                <nav className="text-sm leading-6 font-semibold text-slate-700">
+                    <ul className="flex items-center gap-4">
+                        <li>
+                            <HeaderLink to="/recipes">Recipes</HeaderLink>
+                        </li>
+                        <li>
+                            <HeaderLink to="/notes">Notes</HeaderLink>
+                        </li>
+                        <li>
+                            <HeaderLink to="/about">About</HeaderLink>
+                        </li>
+                        <li>
+                            {session ? (
+                                <Link to="/profile">
+                                    <Avatar
+                                        src="https://avatars.githubusercontent.com/u/1101093?v=4"
+                                        fallback="CS"
+                                    />
+                                </Link>
+                            ) : (
+                                <HeaderLink to="/login">Login</HeaderLink>
+                            )}
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+    )
 }
 
 type HeaderLinkProps = {
-  to: string
-  children: React.ReactNode
+    to: string
+    children: React.ReactNode
 }
 
 function HeaderLink({ to, children }: HeaderLinkProps) {
-  return (
-    <Link className="hover:text-orange-600" to={to}>
-      {children}
-    </Link>
-  )
+    return (
+        <Link
+            className="hover:text-orange-600"
+            to={to}>
+            {children}
+        </Link>
+    )
 }

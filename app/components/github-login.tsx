@@ -12,8 +12,6 @@ export function GithubLogin() {
     // TODO: const { toast } = useToast();
 
     const handleSignIn = async () => {
-        console.log("Sign in with Github", domainUrl)
-
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "github",
             options: {
@@ -31,13 +29,10 @@ export function GithubLogin() {
     }
 
     return (
-        <div>
-            <Button
-                className="p-4 relative w-full flex gap-4 items-center"
-                onClick={handleSignIn}>
-                <Github className="h-4 w-4" /> Login with Github
-            </Button>
-            <p>{`${domainUrl}/auth/callback`}</p>
-        </div>
+        <Button
+            className="p-4 relative w-full flex gap-4 items-center"
+            onClick={handleSignIn}>
+            <Github className="h-4 w-4" /> Login with Github
+        </Button>
     )
 }

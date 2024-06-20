@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge"
 type ButtonPropsType = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     className?: string
     variant?: "default" | "outline" | "link"
+    fullWidth?: boolean
 }
 
 const variants = {
@@ -15,10 +16,14 @@ export function Button({
     children,
     className,
     variant = "default",
+    fullWidth = false,
+    disabled = false,
     ...rest
 }: ButtonPropsType) {
     const classes = twMerge(
         "px-4 py-2 rounded-md",
+        fullWidth && "w-full",
+        disabled && "opacity-50 cursor-not-allowed",
         variants[variant],
         className
     )

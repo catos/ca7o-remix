@@ -1,5 +1,7 @@
-import { ActionFunctionArgs } from "@remix-run/node"
-import { Form, redirect } from "@remix-run/react"
+import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
+import { Form, json, redirect } from "@remix-run/react"
+
+import { getSupabase } from "~/supabase/supabase.server"
 
 import { Button } from "~/components/ui/button"
 import { Heading } from "~/components/ui/heading"
@@ -10,9 +12,14 @@ export async function action({ params }: ActionFunctionArgs) {
     return redirect(`/recipes${params.recipeId}/edit`)
 }
 
-// export function loader({ params }: LoaderFunctionArgs) {
-//     return json({ recipeId: params.recipeId })
-//   }
+export async function loader({ request, params }: LoaderFunctionArgs) {
+    const { session } = await getSupabase({ request })
+    if (!session) {
+        return redirect("/login")
+    }
+
+    return json({ recipeId: params.recipeId })
+}
 
 export default function Edit() {
     return (

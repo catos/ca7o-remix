@@ -1,21 +1,27 @@
+import { twMerge } from "tailwind-merge"
+
 type Props = {
-    src?: string
     fallback: string
+    src?: string
+    className?: string
 }
 
-export function Avatar({ src, fallback }: Props) {
+export function Avatar({ fallback, src, className }: Props) {
+    const classes = twMerge(
+        "w-8 h-8 flex items-center justify-center rounded-full text-sm font-semibold bg-slate-200",
+        className
+    )
+
     return (
-        <span>
+        <span className={classes}>
             {src ? (
                 <img
                     src={src}
                     alt="Avatar"
-                    className="w-8 h-8 rounded-full"
+                    className="rounded-full"
                 />
             ) : (
-                <div className="flex items-center justify-center text-sm font-semibold bg-slate-200 w-8 h-8 rounded-full">
-                    {fallback}
-                </div>
+                <span className="rounded-full">{fallback}</span>
             )}
         </span>
     )

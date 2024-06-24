@@ -56,7 +56,7 @@ export default function App() {
             </head>
             <body>
                 <Header session={session} />
-                <main className="container mx-auto py-4">
+                <main className="container mx-auto py-6">
                     <Outlet context={{ supabase, domainUrl }} />
                 </main>
                 <Scripts />

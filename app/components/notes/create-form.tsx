@@ -2,12 +2,12 @@ import { Form, useFetcher } from "@remix-run/react"
 import { useEffect, useRef, useState } from "react"
 
 import { Button } from "~/components/ui/button"
-import { Card } from "~/components/ui/card"
 import { Textarea } from "~/components/ui/textarea"
 
-import { Heading } from "../ui/heading"
-
 export function CreateForm() {
+    const [isFocused, setIsFocused] = useState(false)
+    const textareaRef = useRef<HTMLTextAreaElement>(null)
+
     const fetcher = useFetcher()
     const isCreating = fetcher.state !== "idle"
 
@@ -19,10 +19,11 @@ export function CreateForm() {
         }
         fetcher.submit({ content }, { method: "post", action: "/notes/create" })
         setContent("")
+        setIsFocused(false)
+        textareaRef.current?.blur()
     }
 
     // TODO: understand and maybe create custom hook for this ?
-    const textareaRef = useRef<HTMLTextAreaElement>(null)
     useEffect(() => {
         if (textareaRef.current) {
             textareaRef.current.style.height = "38px" // Reset height - important to shrink on delete
@@ -39,26 +40,26 @@ export function CreateForm() {
     useSubmitOnShortcut(handleSubmit)
 
     return (
-        <Card>
-            <Form
-                onSubmit={handleSubmit}
-                className="flex flex-col gap-4">
-                <Heading className="text-xl">Create Note</Heading>
-                <Textarea
-                    ref={textareaRef}
-                    name="content"
-                    value={content}
-                    onChange={e => setContent(e.target.value)}
-                    placeholder="Type your note here..."
-                />
+        <Form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4">
+            <Textarea
+                ref={textareaRef}
+                name="content"
+                value={content}
+                onChange={e => setContent(e.target.value)}
+                placeholder="Type your note here..."
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+            />
 
-                <Button
-                    disabled={isCreating}
-                    type="submit">
-                    {isCreating ? "Saving..." : "Save"}
-                </Button>
-            </Form>
-        </Card>
+            <Button
+                disabled={isCreating}
+                hidden={!isFocused}
+                type="submit">
+                {isCreating ? "Saving..." : "Save"}
+            </Button>
+        </Form>
     )
 }
 

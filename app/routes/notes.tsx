@@ -65,6 +65,7 @@ type NoteType = {
 
 function Note({ note }: { note: NoteType }) {
     const fetcher = useFetcher()
+
     const handleDelete = async () => {
         fetcher.submit(
             { id: note.id },
@@ -72,16 +73,29 @@ function Note({ note }: { note: NoteType }) {
         )
     }
 
+    const notePreview =
+        note.content.length > 100
+            ? note.content.slice(0, 100) + "..."
+            : note.content
+
     return (
-        <Card
-            className="relative max-h-48 overflow-y-hidden"
-            key={note.id}>
-            <Markdown>{note.content}</Markdown>
-            <Button
-                className="absolute top-2 right-2 rounded-full p-2 bg-transparent"
-                onClick={handleDelete}>
-                <TrashIcon className="w-4 h-4" />
-            </Button>
-        </Card>
+        <>
+            <Card
+                className="relative max-h-48 overflow-y-hidden"
+                key={note.id}>
+                {/* <Button popovertarget={`popover-${note.id}`}></Button> */}
+                <Markdown>{notePreview}</Markdown>
+                <Button
+                    className="absolute top-2 right-2 rounded-full p-2 bg-transparent"
+                    onClick={handleDelete}>
+                    <TrashIcon className="w-4 h-4" />
+                </Button>
+            </Card>
+            {/* <div
+                popover="manual"
+                id={`popover-${note.id}`}>
+                <Markdown>{note.content}</Markdown>
+            </div> */}
+        </>
     )
 }

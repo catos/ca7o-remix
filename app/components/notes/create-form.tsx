@@ -14,6 +14,9 @@ export function CreateForm() {
     const [content, setContent] = useState("")
 
     const handleSubmit = async () => {
+        if (!content) {
+            return
+        }
         fetcher.submit({ content }, { method: "post", action: "/notes/create" })
         setContent("")
     }
@@ -31,6 +34,9 @@ export function CreateForm() {
             textareaRef.current.style.height = `${height}px`
         }
     }, [content])
+
+    // TODO: trigger only when textarea is focused
+    useSubmitOnShortcut(handleSubmit)
 
     return (
         <Card>
@@ -54,4 +60,22 @@ export function CreateForm() {
             </Form>
         </Card>
     )
+}
+
+// TODO: make generix (ex. useShortcut(...)), one does not simply typescript a predicate parameter
+// TODO: optimize ?
+function useSubmitOnShortcut(cb: (e: KeyboardEvent) => void) {
+    const handler = (e: KeyboardEvent) => {
+        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+            cb(e)
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener("keydown", handler)
+
+        return () => {
+            window.removeEventListener("keydown", handler)
+        }
+    })
 }

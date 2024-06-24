@@ -15,7 +15,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
         console.error(error)
     }
 
-    return json({ recipes: data ?? [] }, { headers })
+    const recipes = data ?? []
+
+    return json({ recipes }, { headers })
 }
 
 export default function Recipes() {

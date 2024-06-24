@@ -5,7 +5,7 @@ import { CookingPotIcon, HeartIcon, PrinterIcon } from "lucide-react"
 import { getSupabase } from "~/supabase/supabase.server"
 
 import { Image } from "~/components/image"
-import Markdown from "~/components/markdown"
+import { Markdown } from "~/components/markdown"
 import { Heading } from "~/components/ui/heading"
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

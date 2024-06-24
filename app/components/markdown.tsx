@@ -1,23 +1,23 @@
 // import List from "~/components/ui/list"
 // import ListItem from "~/components/ui/list-item"
 // import Timer from "../timer"
-import Markdown from "react-markdown"
+import ReactMarkdown from "react-markdown"
 
 import { Image } from "~/components/image"
 import { Heading } from "~/components/ui/heading"
 
 import { Link } from "./ui/link"
 
-export default function MarkdownLol({ children }: { children: string | null }) {
+export function Markdown({ children }: { children: string | null }) {
     if (!children) return null
 
     return (
-        <Markdown
+        <ReactMarkdown
             components={{
                 h1: ({ children }) => {
                     return (
                         <Heading
-                            as="h3"
+                            as="h1"
                             className="mt-2 mb-0">
                             {children}
                         </Heading>
@@ -27,7 +27,7 @@ export default function MarkdownLol({ children }: { children: string | null }) {
                 h2: ({ children }) => {
                     return (
                         <Heading
-                            as="h4"
+                            as="h2"
                             className="mt-2 mb-0">
                             {children}
                         </Heading>
@@ -37,7 +37,7 @@ export default function MarkdownLol({ children }: { children: string | null }) {
                 h3: ({ children }) => {
                     return (
                         <Heading
-                            as="h5"
+                            as="h3"
                             className="mt-2 mb-0">
                             {children}
                         </Heading>
@@ -96,6 +96,6 @@ export default function MarkdownLol({ children }: { children: string | null }) {
                 }
             }}>
             {children}
-        </Markdown>
+        </ReactMarkdown>
     )
 }

@@ -12,7 +12,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
     const { id, label, className, ...rest } = props
 
     const classes = twMerge(
-        "appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500",
+        "h-[38px] appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500",
         className
     )
     const input = (

@@ -15,33 +15,15 @@ export function Markdown({ children }: { children: string | null }) {
         <ReactMarkdown
             components={{
                 h1: ({ children }) => {
-                    return (
-                        <Heading
-                            as="h1"
-                            className="mt-2 mb-0">
-                            {children}
-                        </Heading>
-                    )
+                    return <Heading as="h1">{children}</Heading>
                 },
 
                 h2: ({ children }) => {
-                    return (
-                        <Heading
-                            as="h2"
-                            className="mt-2 mb-0">
-                            {children}
-                        </Heading>
-                    )
+                    return <Heading as="h2">{children}</Heading>
                 },
 
                 h3: ({ children }) => {
-                    return (
-                        <Heading
-                            as="h3"
-                            className="mt-2 mb-0">
-                            {children}
-                        </Heading>
-                    )
+                    return <Heading as="h3">{children}</Heading>
                 },
 
                 ul: ({ children }) => {
@@ -53,7 +35,7 @@ export function Markdown({ children }: { children: string | null }) {
                 },
 
                 p: ({ children }) => {
-                    return <p className="mb-4 leading-relaxed">{children}</p>
+                    return <p className="leading-relaxed">{children}</p>
                 },
 
                 code: ({ children, className, ...rest }) => {

@@ -3,7 +3,7 @@ import { Link } from "@remix-run/react"
 import { Session } from "@supabase/supabase-js"
 
 import { Logo } from "./logo"
-import { Avatar } from "./ui/avatar"
+import { Profile } from "./profile"
 
 export function Header({ session }: { session: Session | null }) {
     return (
@@ -28,12 +28,7 @@ export function Header({ session }: { session: Session | null }) {
                         </li>
                         <li>
                             {session ? (
-                                <Link to="/profile">
-                                    <Avatar
-                                        src="https://avatars.githubusercontent.com/u/1101093?v=4"
-                                        fallback="CS"
-                                    />
-                                </Link>
+                                <Profile session={session} />
                             ) : (
                                 <HeaderLink to="/login">Login</HeaderLink>
                             )}

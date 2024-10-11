@@ -14,6 +14,7 @@ export async function action({ params }: ActionFunctionArgs) {
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
     const { session } = await getSupabase({ request })
+
     if (!session) {
         return redirect("/login")
     }

@@ -7,17 +7,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const code = requestUrl.searchParams.get("code")
     const next = requestUrl.searchParams.get("next") || "/"
 
-    console.log("aut.callback", code, next)
-
     if (code) {
         const { headers, supabase } = await getSupabase({
             request
         })
 
         const { error } = await supabase.auth.exchangeCodeForSession(code)
-
-        console.log("Error: auth callback ", error)
-
         if (!error) {
             return redirect(next, { headers })
         }

@@ -8,7 +8,6 @@ import { Heading } from "~/components/ui/heading"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const { supabase, headers } = await getSupabase({ request })
-
     const { data, error } = await supabase.from("recipes").select("*")
 
     if (error) {

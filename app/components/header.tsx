@@ -11,7 +11,8 @@ export function Header({ session }: { session: Session | null }) {
             <header className="container m-auto flex items-center gap-8 h-16 sticky top-0 z-40 backdrop-blur flex-none transition-colors duration-500">
                 <Link
                     className="hover:bg-primary/5 rounded-full mr-auto"
-                    to="/">
+                    to="/"
+                    aria-label="Home">
                     <Logo />
                 </Link>
 

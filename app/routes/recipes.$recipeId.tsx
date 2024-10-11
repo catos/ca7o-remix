@@ -15,6 +15,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     if (!recipeId) {
         return redirect("/404", { headers })
     }
+
     const { data } = await supabase
         .from("recipes")
         .select("*")

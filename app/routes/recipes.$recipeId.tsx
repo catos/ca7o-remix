@@ -71,20 +71,26 @@ onSubmit={(event) => {
                     className="px-4 m-0 text-center font-semibold">
                     {recipe.title}
                 </Heading>
-                <div className="py-4 flex gap-2 justify-center">
-                    {/* <Badge>Fisk</Badge>
-          <Badge>Enkel</Badge>
-          <Badge>Sunn</Badge> */}
-                </div>
-                <div className="pb-4 flex gap-4 justify-center">
-                    {/* <ToggleFavorite recipe={recipe} /> */}
-                    <HeartIcon className="w-6 h-6 text-orange-600" />
-                    <PrinterIcon className="w-6 h-6 text-orange-600" />
-                </div>
+
+                {/* <div className="py-4 flex gap-2 justify-center">
+                    <Badge>Fisk</Badge>
+                    <Badge>Enkel</Badge>
+                    <Badge>Sunn</Badge>
+                </div> */}
+            </section>
+
+            {recipe.description && (
+                <section className="text-center">{recipe.description}</section>
+            )}
+
+            <section className="flex gap-4 justify-center">
+                {/* <ToggleFavorite recipe={recipe} /> */}
+                <HeartIcon className="w-6 h-6 text-orange-600" />
+                <PrinterIcon className="w-6 h-6 text-orange-600" />
             </section>
 
             <div className="flex flex-col gap-4 sm:flex-row">
-                <section className="rounded-md sm:w-1/2 md:w-5/12 bg-white p-4">
+                <section className="min-h-64rounded-md sm:w-1/2 md:w-5/12">
                     <Heading
                         as="h2"
                         className="uppercase text-foreground/50 text-base">
@@ -93,7 +99,7 @@ onSubmit={(event) => {
                     <Markdown>{recipe.ingredients}</Markdown>
                 </section>
 
-                <section className="rounded-md sm:w-1/2 md:w-7/12 bg-white p-4">
+                <section className="min-h-64 rounded-md sm:w-1/2 md:w-7/12">
                     <Heading
                         as="h2"
                         className="uppercase text-foreground/50 text-base">

@@ -16,6 +16,7 @@ import {
 import { getSupabase, getSupabaseEnv } from "./supabase/supabase.server"
 import { useGetSupabase } from "./supabase/use-get-supabase"
 
+import { Footer } from "./components/footer"
 import { Header } from "./components/header"
 import stylesheet from "./tailwind.css?url"
 
@@ -55,12 +56,15 @@ export default function App() {
                 <Links />
             </head>
             <body>
-                <Header session={session} />
-                <main className="container mx-auto py-6">
-                    <Outlet context={{ supabase, domainUrl }} />
-                </main>
-                <Scripts />
-                <ScrollRestoration />
+                <div className="relative flex min-h-screen flex-col bg-background">
+                    <Header session={session} />
+                    <main className="container mx-auto p-4">
+                        <Outlet context={{ supabase, domainUrl }} />
+                    </main>
+                    <Footer />
+                    <Scripts />
+                    <ScrollRestoration />
+                </div>
             </body>
         </html>
     )

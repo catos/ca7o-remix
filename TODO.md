@@ -4,8 +4,7 @@ https://www.youtube.com/watch?v=ocWc_FFc5jE&t=6193s&ab_channel=Rajtalkstech
 
 # TODOs
 
--   Recipe: basic CRUD, listview and view
--   Shadcn:setup & a few simple components
+-   Shadcn: dark theme
 -   Profile: popover & simple contents
 -   Notes: basic CRUD, listview and popover-view
 -   Notes: todos

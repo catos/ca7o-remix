@@ -1,98 +1,29 @@
-import React, { cloneElement, useEffect, useRef, useState } from "react"
+import * as React from "react"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
 
-import { Button } from "~/components/ui/button"
+import { cn } from "~/lib/utils"
 
-type Props = {
-    defaultOpen?: boolean
-    toggler?: React.ReactNode
-    children: React.ReactNode
-}
+const Popover = PopoverPrimitive.Root
 
-export function Popover({ defaultOpen = false, toggler, children }: Props) {
-    const [open, setOpen] = useState(defaultOpen)
-    const toggle = () => setOpen(!open)
-    const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0 })
-    const togglerRef = useRef<HTMLButtonElement>(null)
-    const popoverRef = useRef<HTMLDivElement>(null)
+const PopoverTrigger = PopoverPrimitive.Trigger
 
-    const adjustPosition = () => {
-        console.log("adjustPosition", togglerRef.current, popoverRef.current)
-        if (togglerRef.current && popoverRef.current) {
-            const togglerRect = togglerRef.current.getBoundingClientRect()
-            const popoverRect = popoverRef.current.getBoundingClientRect()
-            const viewportWidth = window.innerWidth
-            const viewportHeight = window.innerHeight
+const PopoverContent = React.forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+>(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
+  <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Content
+      ref={ref}
+      align={align}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className
+      )}
+      {...props}
+    />
+  </PopoverPrimitive.Portal>
+))
+PopoverContent.displayName = PopoverPrimitive.Content.displayName
 
-            let top = togglerRect.bottom
-            let left = togglerRect.left
-
-            console.log({
-                left,
-                "popoverRect.width": popoverRect.width,
-                viewportWidth
-            })
-
-            // Adjust if popover goes beyond the right edge of the viewport
-            if (left + popoverRect.width > viewportWidth) {
-                left = viewportWidth - popoverRect.width - 48
-            }
-
-            // Adjust if popover goes beyond the bottom edge of the viewport
-            if (top + popoverRect.height > viewportHeight) {
-                top = togglerRect.top - popoverRect.height
-            }
-
-            setPopoverPosition({ top, left })
-        }
-    }
-
-    useEffect(() => {
-        if (open) {
-            adjustPosition()
-        }
-    }, [open])
-
-    const { x, y, width, height } =
-        popoverRef.current?.getBoundingClientRect() || {}
-
-    const _toggler = toggler ? (
-        cloneElement(toggler as React.ReactElement, {
-            onClick: toggle,
-            ref: togglerRef
-        })
-    ) : (
-        <Button
-            onClick={toggle}
-            ref={togglerRef}>
-            Toggle
-        </Button>
-    )
-
-    return (
-        <>
-            {_toggler}
-            {open && (
-                <div
-                    ref={popoverRef}
-                    // className="border rounded-lg fixed bg-white w-2/3 max-h-2/3 shadow-lg"
-                    className="border rounded-lg fixed bg-white w-[400px] shadow-lg"
-                    style={{
-                        top: `${popoverPosition.top}px`,
-                        left: `${popoverPosition.left}px`
-                    }}>
-                    <ul>
-                        <li>top: {popoverPosition.top}</li>
-                        <li>left: {popoverPosition.left}</li>
-                        <li>
-                            popoverRect:{" "}
-                            {popoverRef.current
-                                ?.getBoundingClientRect()
-                                .toString()}
-                        </li>
-                    </ul>
-                    {children}
-                </div>
-            )}
-        </>
-    )
-}
+export { Popover, PopoverTrigger, PopoverContent }

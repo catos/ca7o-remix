@@ -7,8 +7,8 @@ import { Profile } from "./profile"
 
 export function Header({ session }: { session: Session | null }) {
     return (
-        <div className="border-b border-primary-300">
-            <header className="container m-auto flex items-center gap-8 h-16 sticky top-0 z-40 backdrop-blur flex-none transition-colors duration-500">
+        <header className="sticky top-0 z-50 w-full backdrop-blur bg-background/75">
+            <div className="container mx-auto p-4 flex items-center gap-8 h-16 sticky top-0 z-40 backdrop-blur flex-none transition-colors duration-500">
                 <Link
                     className="hover:bg-primary/5 rounded-full mr-auto"
                     to="/"
@@ -36,8 +36,8 @@ export function Header({ session }: { session: Session | null }) {
                         </li>
                     </ul>
                 </nav>
-            </header>
-        </div>
+            </div>
+        </header>
     )
 }
 

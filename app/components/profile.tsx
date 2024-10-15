@@ -2,7 +2,11 @@ import { Session } from "@supabase/supabase-js"
 
 import { Avatar } from "~/components/ui/avatar"
 import { Button } from "~/components/ui/button"
-import { Popover } from "~/components/ui/popover"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
+} from "~/components/ui/popover"
 
 import { Heading } from "./ui/heading"
 
@@ -20,16 +24,15 @@ export function Profile({ session }: { session: Session }) {
         .join("")
 
     return (
-        <Popover
-            toggler={
-                <Button variant="link">
-                    <Avatar
-                        src={profile.avatarUrl}
-                        fallback={initials}
-                    />
-                </Button>
-            }>
-            <div className="flex flex-col items-center gap-4 m-4">
+        <Popover>
+            <PopoverTrigger>
+                <Avatar
+                    src={profile.avatarUrl}
+                    fallback={initials}
+                />
+            </PopoverTrigger>
+
+            <PopoverContent className="flex flex-col items-center gap-4 m-4">
                 <Avatar
                     fallback={initials}
                     src={profile.avatarUrl}
@@ -79,7 +82,7 @@ export function Profile({ session }: { session: Session }) {
                         </li>
                     </ul>
                 </div>
-            </div>
+            </PopoverContent>
         </Popover>
     )
 }

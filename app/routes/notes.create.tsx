@@ -11,6 +11,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const formData = await request.formData()
     const content = formData.get("content") as string
+    const parentId = formData.get("parentId") as string | undefined
 
     if (!content) {
         return json({ error: "Content is required" }, { status: 400, headers })
@@ -18,6 +19,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const note = {
         content,
+        parent_id: parentId,
         user_id: session.user.id
     }
 

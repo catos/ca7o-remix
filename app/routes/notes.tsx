@@ -30,6 +30,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Notes() {
     const { notes } = useLoaderData<typeof loader>()
 
+    // TODO: nest notes with hierachy
+    console.log("notes", notes)
+
     return (
         <div className="flex flex-col gap-6">
             <CreateForm />
@@ -63,6 +66,7 @@ type NoteType = {
     user_id: string
 }
 
+// TODO: render recursively
 function Note({ note }: { note: NoteType }) {
     const fetcher = useFetcher()
 
@@ -79,23 +83,17 @@ function Note({ note }: { note: NoteType }) {
             : note.content
 
     return (
-        <>
-            <Card
-                className="relative max-h-48 overflow-y-hidden"
-                key={note.id}>
-                {/* <Button popovertarget={`popover-${note.id}`}></Button> */}
-                <Markdown>{notePreview}</Markdown>
-                <Button
-                    className="absolute top-2 right-2 rounded-full p-2 bg-transparent"
-                    onClick={handleDelete}>
-                    <TrashIcon className="w-4 h-4" />
-                </Button>
-            </Card>
-            {/* <div
-                popover="manual"
-                id={`popover-${note.id}`}>
-                <Markdown>{note.content}</Markdown>
-            </div> */}
-        </>
+        <Card
+            className="relative max-h-48 overflow-y-hidden"
+            key={note.id}>
+            <div>parentId: {note.parent_id}</div>
+            <Markdown>{notePreview}</Markdown>
+            <Button
+                className="absolute top-2 right-2 rounded-full p-2 bg-transparent"
+                onClick={handleDelete}>
+                <TrashIcon className="w-4 h-4" />
+            </Button>
+            <CreateForm parentId={note.id} />
+        </Card>
     )
 }

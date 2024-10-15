@@ -80,6 +80,9 @@ export function Profile({ session }: { session: Session }) {
                                 Vercel project deployment
                             </a>
                         </li>
+                        <li>
+                            <a href="https://lucide.dev/icons/">Lucide Icons</a>
+                        </li>
                     </ul>
                 </div>
             </PopoverContent>

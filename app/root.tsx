@@ -58,7 +58,7 @@ export default function App() {
             <body>
                 <div className="relative flex min-h-screen flex-col bg-background">
                     <Header session={session} />
-                    <main className="container mx-auto p-4">
+                    <main className="container min-h-screen mx-auto p-4">
                         <Outlet context={{ supabase, domainUrl }} />
                     </main>
                     <Footer />

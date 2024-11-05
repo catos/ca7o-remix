@@ -1,13 +1,12 @@
 import { type LoaderFunctionArgs, redirect } from "@remix-run/node"
-import { json, useFetcher, useLoaderData } from "@remix-run/react"
-import { TrashIcon } from "lucide-react"
+import { json, useLoaderData } from "@remix-run/react"
+import { PlusIcon } from "lucide-react"
 
 import { getSupabase } from "~/supabase/supabase.server"
 
-import { Markdown } from "~/components/markdown"
 import { CreateForm } from "~/components/notes/create-form"
+import { Note } from "~/components/notes/note"
 import { Button } from "~/components/ui/button"
-import { Card } from "~/components/ui/card"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const { supabase, headers, session } = await getSupabase({ request })
@@ -30,19 +29,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Notes() {
     const { notes } = useLoaderData<typeof loader>()
 
-    // TODO: nest notes with hierachy
-    console.log("notes", notes)
+    const root = notes.filter(note => !note.parent_id)
 
     return (
-        <div className="flex flex-col gap-6">
-            <CreateForm />
+        <div className="flex flex-col gap-2">
+            <CreateForm
+                trigger={
+                    <Button className="mr-auto">
+                        <PlusIcon /> Create Note
+                    </Button>
+                }
+            />
 
-            {notes.length ? (
+            {root.length ? (
                 <div className="grid grid-cols-3 gap-2">
-                    {notes.map(note => (
+                    {root.map(note => (
                         <Note
                             key={note.id}
                             note={note}
+                            notes={notes}
                         />
                     ))}
                 </div>
@@ -52,48 +57,5 @@ export default function Notes() {
                 </div>
             )}
         </div>
-    )
-}
-
-// TODO: move this to a separate file ?
-type NoteType = {
-    content: string
-    created_at: string
-    id: string
-    parent_id: string | null
-    state: number
-    updated_at: string
-    user_id: string
-}
-
-// TODO: render recursively
-function Note({ note }: { note: NoteType }) {
-    const fetcher = useFetcher()
-
-    const handleDelete = async () => {
-        fetcher.submit(
-            { id: note.id },
-            { method: "delete", action: "/notes/delete" }
-        )
-    }
-
-    const notePreview =
-        note.content.length > 100
-            ? note.content.slice(0, 100) + "..."
-            : note.content
-
-    return (
-        <Card
-            className="relative max-h-48 overflow-y-hidden"
-            key={note.id}>
-            <div>parentId: {note.parent_id}</div>
-            <Markdown>{notePreview}</Markdown>
-            <Button
-                className="absolute top-2 right-2 rounded-full p-2 bg-transparent"
-                onClick={handleDelete}>
-                <TrashIcon className="w-4 h-4" />
-            </Button>
-            <CreateForm parentId={note.id} />
-        </Card>
     )
 }

@@ -43,13 +43,13 @@ export function Profile({ session }: { session: Session }) {
                     <p>{profile.email}</p>
                 </div>
                 <Button
-                    fullWidth
+                    className="w-full"
                     disabled>
                     Edit profile
                 </Button>
                 <Button
                     variant="outline"
-                    fullWidth
+                    className="w-full"
                     onClick={() => console.log("TODO: handleSignOut")}>
                     Log out
                 </Button>

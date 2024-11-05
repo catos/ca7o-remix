@@ -13,7 +13,13 @@ import {
 } from "~/components/ui/dialog"
 import { Textarea } from "~/components/ui/textarea"
 
-export function CreateForm({ parentId }: { parentId?: string }) {
+export function CreateForm({
+    trigger,
+    parentId
+}: {
+    trigger: JSX.Element
+    parentId?: string
+}) {
     const [open, setOpen] = useState(false)
 
     // TODO: use isFocused ?!?
@@ -67,9 +73,7 @@ export function CreateForm({ parentId }: { parentId?: string }) {
         <Dialog
             open={open}
             onOpenChange={setOpen}>
-            <DialogTrigger>
-                <PlusIcon className="w-4 h-4" />
-            </DialogTrigger>
+            <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Create a note</DialogTitle>

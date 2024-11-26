@@ -42,7 +42,7 @@ export default function Notes() {
             />
 
             {root.length ? (
-                <div className="grid grid-cols-3 gap-2">
+                <div className="relative grid grid-cols-3 gap-4 grid-rows-auto">
                     {root.map(note => (
                         <Note
                             key={note.id}

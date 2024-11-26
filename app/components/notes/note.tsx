@@ -1,12 +1,14 @@
 import { useFetcher } from "@remix-run/react"
-import { PlusIcon, TrashIcon } from "lucide-react"
+import { EditIcon, PlusIcon, TrashIcon } from "lucide-react"
+import { twMerge } from "tailwind-merge"
 
 import { Markdown } from "~/components/markdown"
 import { CreateForm } from "~/components/notes/create-form"
 import { Button } from "~/components/ui/button"
-import { Card, CardContent, CardFooter } from "~/components/ui/card"
 
-type NoteType = {
+import { EditForm } from "./edit-form"
+
+export type NoteType = {
     content: string
     created_at: string
     id: string
@@ -37,13 +39,23 @@ export function Note({ note, notes }: NoteProps) {
             : note.content
 
     const children = notes.filter(n => n.parent_id === note.id)
+    const classes = twMerge(
+        children.length > 0 && "bg-slate-100",
+        note.parent_id && "w-full"
+    )
 
     return (
         <Card
-            className="relative"
-            key={note.id}>
+            key={note.id}
+            className={classes}>
             <CardContent>
+                {/* TODO: make this work! */}
+                {/* <EditForm
+                    trigger={<Markdown>{notePreview}</Markdown>}
+                    note={note}
+                /> */}
                 <Markdown>{notePreview}</Markdown>
+
                 {children.map(child => (
                     <Note
                         key={child.id}
@@ -53,7 +65,7 @@ export function Note({ note, notes }: NoteProps) {
                 ))}
             </CardContent>
 
-            <CardFooter className="justify-end hover:bg-slate-100">
+            <CardFooter>
                 <Button
                     size="iconSm"
                     variant="ghost"
@@ -61,6 +73,17 @@ export function Note({ note, notes }: NoteProps) {
                     onClick={handleDelete}>
                     <TrashIcon />
                 </Button>
+                <EditForm
+                    trigger={
+                        <Button
+                            size="iconSm"
+                            variant="ghost"
+                            className="rounded-full">
+                            <EditIcon />
+                        </Button>
+                    }
+                    note={note}
+                />
                 <CreateForm
                     trigger={
                         <Button
@@ -75,4 +98,26 @@ export function Note({ note, notes }: NoteProps) {
             </CardFooter>
         </Card>
     )
+}
+
+export function Card({
+    className,
+    children
+}: {
+    className?: string
+    children: React.ReactNode
+}) {
+    const classes = twMerge(
+        "flex flex-col gap-4 bg-slate-200 rounded-lg relative w-60",
+        className
+    )
+    return <div className={classes}>{children}</div>
+}
+
+export function CardContent({ children }: { children: React.ReactNode }) {
+    return <div className="flex flex-col gap-4 flex-1 p-4">{children}</div>
+}
+
+export function CardFooter({ children }: { children: React.ReactNode }) {
+    return <div className="px-2 pb-1 flex gap-1 justify-end">{children}</div>
 }

@@ -12,23 +12,26 @@ import {
 } from "~/components/ui/dialog"
 import { Textarea } from "~/components/ui/textarea"
 
-export function CreateForm({
+import { NoteType } from "./note"
+
+// TODO: consolidate with CreateForm ?
+export function EditForm({
     trigger,
-    parentId
+    note
 }: {
     trigger: JSX.Element
-    parentId?: string
+    note: NoteType
 }) {
     const [open, setOpen] = useState(false)
 
     // TODO: use isFocused ?!?
-    const [isFocused, setIsFocused] = useState(false)
+    // const [isFocused, setIsFocused] = useState(false)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
 
     const fetcher = useFetcher()
-    const isCreating = fetcher.state !== "idle"
+    const isLoading = fetcher.state !== "idle"
 
-    const [content, setContent] = useState("")
+    const [content, setContent] = useState(note.content)
 
     const handleSubmit = async () => {
         if (!content) {
@@ -36,13 +39,10 @@ export function CreateForm({
         }
 
         const formData = new FormData()
+        formData.append("id", note.id)
         formData.append("content", content)
 
-        if (parentId) {
-            formData.append("parentId", parentId)
-        }
-
-        fetcher.submit(formData, { method: "post", action: "/notes/create" })
+        fetcher.submit(formData, { method: "post", action: "/notes/edit" })
 
         // TODO: check if success before closing!
         setOpen(false)
@@ -54,7 +54,7 @@ export function CreateForm({
     // TODO: understand and maybe create custom hook for this ?
     useEffect(() => {
         if (textareaRef.current) {
-            textareaRef.current.style.height = "38px" // Reset height - important to shrink on delete
+            textareaRef.current.style.height = "96px" // Reset height - important to shrink on delete
             const computed = window.getComputedStyle(textareaRef.current)
             const height =
                 textareaRef.current.scrollHeight +
@@ -74,10 +74,9 @@ export function CreateForm({
             <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Create a note</DialogTitle>
+                    <DialogTitle>Edit note</DialogTitle>
                     <DialogDescription>
-                        It supports markdown! Blabla...isFocused:{" "}
-                        {isFocused.toString()}
+                        It supports markdown! Blabla...
                     </DialogDescription>
                 </DialogHeader>
                 <Form
@@ -89,15 +88,15 @@ export function CreateForm({
                         value={content}
                         onChange={e => setContent(e.target.value)}
                         placeholder="Type your note here..."
-                        onFocus={() => setIsFocused(true)}
-                        onBlur={() => setIsFocused(false)}
+                        // onFocus={() => setIsFocused(true)}
+                        // onBlur={() => setIsFocused(false)}
                     />
 
                     <Button
-                        disabled={isCreating}
+                        disabled={isLoading}
                         // hidden={!isFocused}
                         type="submit">
-                        {isCreating ? "Saving..." : "Save"}
+                        {isLoading ? "Saving..." : "Save"}
                     </Button>
                 </Form>
             </DialogContent>

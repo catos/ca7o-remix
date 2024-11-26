@@ -83,7 +83,7 @@ onSubmit={(event) => {
                 <section className="text-center">{recipe.description}</section>
             )}
 
-            <section className="flex gap-4 justify-center">
+            <section className="gap-4 justify-center">
                 {/* <ToggleFavorite recipe={recipe} /> */}
                 <HeartIcon className="w-6 h-6 text-orange-600" />
                 <PrinterIcon className="w-6 h-6 text-orange-600" />

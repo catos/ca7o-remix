@@ -2,6 +2,7 @@ import { type LoaderFunctionArgs, redirect } from "@remix-run/node"
 import { json, useLoaderData } from "@remix-run/react"
 import { PlusIcon } from "lucide-react"
 
+import { useOnKeyPress } from "~/lib/use-key-press"
 import { getSupabase } from "~/supabase/supabase.server"
 
 import { CreateForm } from "~/components/notes/create-form"
@@ -30,6 +31,17 @@ export default function Notes() {
     const { notes } = useLoaderData<typeof loader>()
 
     const root = notes.filter(note => !note.parent_id)
+
+    // useOnKeyPress({
+    //     // keys: ["Enter", "Meta"],
+    //     key: "Enter",
+    //     modifier: "Meta",
+    //     cb: (_, keys) => {
+    //         console.log("You pressed the key! ... keys: " + keys)
+    //     },
+    //     enabled: true,
+    //     preventDefault: true
+    // })
 
     return (
         <div className="flex flex-col gap-2">

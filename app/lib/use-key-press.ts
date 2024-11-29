@@ -1,15 +1,31 @@
-// TODO: make generix (ex. useShortcut(...)), one does not simply typescript a predicate parameter
 import { useEffect } from "react"
 
-// TODO: optimize ?
-export function useOnKeyPress(
-    condition: boolean,
-    cb: (e: KeyboardEvent) => void
-) {
+// TODO: continue working on this
+
+type Props = {
+    // TODO: support multiple keys
+    // keys: string[]
+    key: string
+    modifier: string
+    cb: (e: KeyboardEvent, key: string) => void
+    enabled?: boolean
+    preventDefault?: boolean
+}
+
+export function useOnKeyPress({
+    key,
+    cb,
+    enabled = true,
+    preventDefault = false
+}: Props) {
     const handler = (e: KeyboardEvent) => {
-        const validKeyCombo = e.key === "Enter" && (e.metaKey || e.ctrlKey)
-        if (condition && validKeyCombo) {
-            cb(e)
+        // const validKeyCombo = e.key === "Enter" && (e.metaKey || e.ctrlKey)
+        const validKeyCombo = e.key === key
+        // const isValidKeyModifier = modifier  (e.metaKey || e.ctrlKey)
+        console.log({ key: e.key, validKeyCombo })
+        if (enabled && validKeyCombo) {
+            preventDefault && e.preventDefault()
+            cb(e, key)
         }
     }
 

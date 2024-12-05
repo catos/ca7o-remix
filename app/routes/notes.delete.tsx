@@ -11,6 +11,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const formData = await request.formData()
     const id = formData.get("id") as string
+    console.log("DELETE NOTE", { id })
 
     if (!id) {
         return json({ error: "Id is required" }, { status: 400, headers })

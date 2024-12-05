@@ -1,4 +1,5 @@
 import { Form, useFetcher } from "@remix-run/react"
+import { TrashIcon } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 import { Button } from "~/components/ui/button"
@@ -24,8 +25,6 @@ export function EditForm({
 }) {
     const [open, setOpen] = useState(false)
 
-    // TODO: use isFocused ?!?
-    // const [isFocused, setIsFocused] = useState(false)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
 
     const fetcher = useFetcher()
@@ -33,7 +32,13 @@ export function EditForm({
 
     const [content, setContent] = useState(note.content)
 
-    const handleSubmit = async () => {
+    const handleDelete = async () => {
+        fetcher.submit(
+            { id: note.id },
+            { method: "delete", action: "/notes/delete" }
+        )
+    }
+    const handleUpdate = async () => {
         if (!content) {
             return
         }
@@ -42,12 +47,15 @@ export function EditForm({
         formData.append("id", note.id)
         formData.append("content", content)
 
-        fetcher.submit(formData, { method: "post", action: "/notes/edit" })
+        // TODO: check fetcher.state and close dialog on success (wrap in custom hook?)
+        fetcher.submit(formData, {
+            method: "post",
+            action: "/notes/edit"
+        })
 
         // TODO: check if success before closing!
         setOpen(false)
         setContent("")
-        // setIsFocused(false)
         textareaRef.current?.blur()
     }
 
@@ -74,31 +82,31 @@ export function EditForm({
             <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Edit note</DialogTitle>
+                    <DialogTitle>Edit note: {note.id}</DialogTitle>
                     <DialogDescription>
                         It supports markdown! Blabla...
                     </DialogDescription>
                 </DialogHeader>
-                <Form
-                    onSubmit={handleSubmit}
-                    className="flex flex-col gap-4">
-                    <Textarea
-                        ref={textareaRef}
-                        name="content"
-                        value={content}
-                        onChange={e => setContent(e.target.value)}
-                        placeholder="Type your note here..."
-                        // onFocus={() => setIsFocused(true)}
-                        // onBlur={() => setIsFocused(false)}
-                    />
+                <Textarea
+                    ref={textareaRef}
+                    name="content"
+                    value={content}
+                    onChange={e => setContent(e.target.value)}
+                    placeholder="Type your note here..."
+                />
 
-                    <Button
-                        disabled={isLoading}
-                        // hidden={!isFocused}
-                        type="submit">
-                        {isLoading ? "Saving..." : "Save"}
-                    </Button>
-                </Form>
+                <Button
+                    size="iconSm"
+                    variant="ghost"
+                    className="rounded-full"
+                    onClick={handleDelete}>
+                    <TrashIcon />
+                </Button>
+                <Button
+                    disabled={isLoading}
+                    onClick={handleUpdate}>
+                    {isLoading ? "Saving..." : "Save"}
+                </Button>
             </DialogContent>
         </Dialog>
     )

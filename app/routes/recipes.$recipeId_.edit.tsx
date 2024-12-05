@@ -34,7 +34,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
         console.error("TODO, what to do with error ?", error)
     }
 
-    return redirect(`/recipes/${params.recipeId}`)
+    return redirect(`/recipes/${recipeId}`)
 }
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

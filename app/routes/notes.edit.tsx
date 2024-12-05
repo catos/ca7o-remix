@@ -1,10 +1,9 @@
-import { ActionFunctionArgs, json } from "@remix-run/node"
+import { ActionFunctionArgs, json, redirect } from "@remix-run/node"
 
 import { getSupabase } from "~/supabase/supabase.server"
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ params, request }: ActionFunctionArgs) {
     const { supabase, session, headers } = await getSupabase({ request })
-
     if (!session) {
         return { redirect: "/login" }
     }
@@ -17,11 +16,12 @@ export async function action({ request }: ActionFunctionArgs) {
         return json({ error: "Content is required" }, { status: 400, headers })
     }
 
-    const note = {
-        content
-    }
-
-    const { error } = await supabase.from("notes").update(note).eq("id", id)
+    const { error } = await supabase
+        .from("notes")
+        .update({
+            content
+        })
+        .eq("id", id)
 
     if (error) {
         console.error(error)

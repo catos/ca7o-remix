@@ -6,7 +6,7 @@ import { useOnKeyPress } from "~/lib/use-key-press"
 import { getSupabase } from "~/supabase/supabase.server"
 
 import { CreateForm } from "~/components/notes/create-form"
-import { Note } from "~/components/notes/note"
+import { Note, NoteType } from "~/components/notes/note"
 import { Button } from "~/components/ui/button"
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -30,8 +30,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Notes() {
     const { notes } = useLoaderData<typeof loader>()
 
-    const root = notes.filter(note => !note.parent_id)
-
     // useOnKeyPress({
     //     // keys: ["Enter", "Meta"],
     //     key: "Enter",
@@ -43,6 +41,7 @@ export default function Notes() {
     //     preventDefault: true
     // })
 
+    const { columns, rootCount } = notesToColumns(notes)
     return (
         <div className="flex flex-col gap-2">
             <CreateForm
@@ -53,14 +52,21 @@ export default function Notes() {
                 }
             />
 
-            {root.length ? (
-                <div className="relative grid grid-cols-3 gap-4 grid-rows-auto">
-                    {root.map(note => (
-                        <Note
-                            key={note.id}
-                            note={note}
-                            notes={notes}
-                        />
+            {rootCount > 0 ? (
+                <div className="flex gap-4">
+                    {columns.map(col => (
+                        <div
+                            key={col.id}
+                            className="flex flex-col gap-4">
+                            {col.id}
+                            {col.notes.map(note => (
+                                <Note
+                                    key={note.id}
+                                    note={note}
+                                    notes={notes}
+                                />
+                            ))}
+                        </div>
                     ))}
                 </div>
             ) : (
@@ -70,4 +76,19 @@ export default function Notes() {
             )}
         </div>
     )
+}
+
+function notesToColumns(notes: NoteType[]) {
+    const root = notes.filter(note => !note.parent_id)
+    const rootCount = root.length
+    const columnCount = rootCount > 3 ? 3 : rootCount
+    const take = Math.ceil(rootCount / columnCount)
+
+    const columns = []
+    for (let i = 1; i < columnCount + 1; i++) {
+        const _notes = root.splice(0, take)
+        columns.push({ id: i, notes: _notes })
+    }
+
+    return { columns, rootCount, columnCount }
 }

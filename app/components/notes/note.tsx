@@ -24,17 +24,8 @@ type NoteProps = {
 }
 
 export function Note({ note, notes }: NoteProps) {
-    const fetcher = useFetcher()
-
-    const handleDelete = async () => {
-        fetcher.submit(
-            { id: note.id },
-            { method: "delete", action: "/notes/delete" }
-        )
-    }
-
     const notePreview =
-        note.content.length > 100
+        note.content.length > 300
             ? note.content.slice(0, 100) + "..."
             : note.content
 
@@ -49,12 +40,14 @@ export function Note({ note, notes }: NoteProps) {
             key={note.id}
             className={classes}>
             <CardContent>
-                {/* TODO: make this work! */}
-                {/* <EditForm
-                    trigger={<Markdown>{notePreview}</Markdown>}
+                <EditForm
+                    trigger={
+                        <div>
+                            <Markdown>{notePreview}</Markdown>
+                        </div>
+                    }
                     note={note}
-                /> */}
-                <Markdown>{notePreview}</Markdown>
+                />
 
                 {children.map(child => (
                     <Note
@@ -66,24 +59,6 @@ export function Note({ note, notes }: NoteProps) {
             </CardContent>
 
             <CardFooter>
-                <Button
-                    size="iconSm"
-                    variant="ghost"
-                    className="rounded-full"
-                    onClick={handleDelete}>
-                    <TrashIcon />
-                </Button>
-                <EditForm
-                    trigger={
-                        <Button
-                            size="iconSm"
-                            variant="ghost"
-                            className="rounded-full">
-                            <EditIcon />
-                        </Button>
-                    }
-                    note={note}
-                />
                 <CreateForm
                     trigger={
                         <Button
@@ -108,14 +83,18 @@ export function Card({
     children: React.ReactNode
 }) {
     const classes = twMerge(
-        "flex flex-col gap-4 bg-slate-200 rounded-lg relative w-60",
+        "flex flex-col bg-slate-200 rounded-lg relative w-60 cursor-pointer",
         className
     )
     return <div className={classes}>{children}</div>
 }
 
 export function CardContent({ children }: { children: React.ReactNode }) {
-    return <div className="flex flex-col gap-4 flex-1 p-4">{children}</div>
+    return (
+        <div className="flex flex-col gap-4 flex-1 p-4 break-words">
+            {children}
+        </div>
+    )
 }
 
 export function CardFooter({ children }: { children: React.ReactNode }) {

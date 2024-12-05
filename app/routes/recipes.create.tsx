@@ -1,7 +1,6 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node"
 import { Form, json, redirect } from "@remix-run/react"
 
-import { Tables } from "~/supabase/database.types"
 import { getSupabase } from "~/supabase/supabase.server"
 
 import { Button } from "~/components/ui/button"

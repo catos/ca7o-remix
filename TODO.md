@@ -6,6 +6,7 @@ https://ui.shadcn.com/blocks
 
 # TODOs
 
+-   Updated at on notes, show seconds|minutes|hours ago if recently updated (use date-fns)
 -   Notes: basic CRUD, listview and popover-view
 -   Shadcn: dark theme
 -   Notes: todos

@@ -40,6 +40,9 @@ export function Note({ note, notes }: NoteProps) {
             key={note.id}
             className={classes}>
             <CardContent>
+                <div>
+                    <span>{note.updated_at}</span>
+                </div>
                 <EditForm
                     trigger={
                         <div>

@@ -16,12 +16,12 @@ export async function action({ params, request }: ActionFunctionArgs) {
         return json({ error: "Content is required" }, { status: 400, headers })
     }
 
-    const { error } = await supabase
-        .from("notes")
-        .update({
-            content
-        })
-        .eq("id", id)
+    const updates = {
+        content,
+        updated_at: new Date().toISOString()
+    }
+
+    const { error } = await supabase.from("notes").update(updates).eq("id", id)
 
     if (error) {
         console.error(error)

@@ -16,7 +16,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
         return redirect("/login")
     }
 
-    const { data, error } = await supabase.from("notes").select("*")
+    const { data, error } = await supabase
+        .from("notes")
+        .select("*")
+        .order("updated_at", { ascending: false })
 
     if (error) {
         console.error(error)

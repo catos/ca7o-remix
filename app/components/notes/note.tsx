@@ -1,10 +1,3 @@
-import { useFetcher } from "@remix-run/react"
-import {
-    differenceInSeconds,
-    format,
-    formatDistance,
-    formatDistanceToNow
-} from "date-fns"
 import {
     differenceInSeconds,
     format,
@@ -51,15 +44,6 @@ export function Note({ note, notes }: NoteProps) {
     )
     const isNew = secondsAgo < 10
 
-
-    const updatedToNow = formatDistanceToNow(new Date(note.updated_at))
-
-    const secondsAgo = differenceInSeconds(
-        new Date(),
-        new Date(note.updated_at)
-    )
-    const isNew = secondsAgo < 10
-
     const classes = twMerge(
         "bg-slate-200",
         children.length > 0 && "bg-slate-200",
@@ -72,14 +56,11 @@ export function Note({ note, notes }: NoteProps) {
 
     return (
         <Wrapper
-        <Wrapper
             key={note.id}
             className={classes}>
             <Content>
-            <Content>
                 <EditForm
                     trigger={
-                        <div className="cursor-pointer">
                         <div className="cursor-pointer">
                             <Markdown>{notePreview}</Markdown>
                         </div>
@@ -96,18 +77,6 @@ export function Note({ note, notes }: NoteProps) {
                     ))}
                 </div>
             </Content>
-                <div className="flex flex-col gap-1">
-                    {children.map(child => (
-                        <ChildNote
-                            key={child.id}
-                            note={child}
-                        />
-                    ))}
-                </div>
-            </Content>
-
-            <Footer>
-                <span className="text-sm">{updatedToNow}</span>
             <Footer>
                 <span className="text-sm">{updatedToNow}</span>
                 <CreateForm
@@ -123,12 +92,9 @@ export function Note({ note, notes }: NoteProps) {
                 />
             </Footer>
         </Wrapper>
-            </Footer>
-        </Wrapper>
     )
 }
 
-function Wrapper({
 function Wrapper({
     className,
     children
@@ -144,28 +110,11 @@ function Wrapper({
 }
 
 function Content({ children }: { children: React.ReactNode }) {
-function Content({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex flex-col flex-1 gap-2 break-words">{children}</div>
         <div className="flex flex-col flex-1 gap-2 break-words">{children}</div>
     )
 }
 
-function Footer({ children }: { children: React.ReactNode }) {
-    return <div className="flex items-center justify-between">{children}</div>
-}
-
-function ChildNote({ note }: { note: NoteType }) {
-    return (
-        <EditForm
-            trigger={
-                <div className="py-1 px-3 bg-slate-300 rounded-lg cursor-pointer">
-                    {note.content}
-                </div>
-            }
-            note={note}
-        />
-    )
 function Footer({ children }: { children: React.ReactNode }) {
     return <div className="flex items-center justify-between">{children}</div>
 }

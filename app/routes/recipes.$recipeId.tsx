@@ -53,7 +53,7 @@ onSubmit={(event) => {
         <div className="flex flex-col gap-4">
             <section className="relative">
                 <Link
-                    className="absolute top-2 right-2 no-underline font-bold opacity-60 bg-background rounded-full p-2"
+                    className="absolute top-2 right-2 no-underline font-bold opacity-60 bg-background rounded-full p-2 text-foreground"
                     to={`/recipes/${recipe.id}/edit`}>
                     <CookingPotIcon />
                 </Link>
@@ -96,7 +96,9 @@ onSubmit={(event) => {
                         className="uppercase text-foreground/50 text-base">
                         Ingrendienser
                     </Heading>
-                    <Markdown>{recipe.ingredients}</Markdown>
+                    <Markdown className="text-foreground list-disc">
+                        {recipe.ingredients}
+                    </Markdown>
                 </section>
 
                 <section className="min-h-64 rounded-md sm:w-1/2 md:w-7/12">
@@ -105,7 +107,9 @@ onSubmit={(event) => {
                         className="uppercase text-foreground/50 text-base">
                         Fremgangsmåte
                     </Heading>
-                    <Markdown>{recipe.instructions}</Markdown>
+                    <Markdown className="text-foreground">
+                        {recipe.instructions}
+                    </Markdown>
                 </section>
             </div>
         </div>

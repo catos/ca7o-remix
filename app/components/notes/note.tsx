@@ -42,12 +42,12 @@ export function Note({ note, notes }: NoteProps) {
         new Date(),
         new Date(note.updated_at)
     )
-    const isNew = note.id === "efd04289-181e-4837-8643-0cfef7bccf5c" // secondsAgo < 10
+    const isNew = secondsAgo < 10
 
     const classes = twMerge(
         "bg-secondary",
         // children.length > 0 && "bg-slate-200",
-        isNew && "border-4 border-slate-300"
+        isNew && "border"
         // "bg-slate-200",
     )
 

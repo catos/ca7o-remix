@@ -17,7 +17,7 @@ const titleTypes = {
 
 export function Heading({ as = "h1", children, className }: Props) {
     const classes = twMerge(
-        "font-medium leading-none tracking-tight text-gray-900",
+        "font-medium leading-none tracking-tight",
         titleTypes[as],
         className
     )

@@ -25,7 +25,7 @@ export function Profile({ session }: { session: Session }) {
 
     return (
         <Popover>
-            <PopoverTrigger>
+            <PopoverTrigger className="px-2">
                 <Avatar
                     src={profile.avatarUrl}
                     fallback={initials}

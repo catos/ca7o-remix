@@ -1,8 +1,10 @@
 import { Button } from "~/components/ui/button"
+import { Heading } from "~/components/ui/heading"
 
 export default function Index() {
     return (
         <>
+            <Heading>Mauris</Heading>
             <section className="mb-6">
                 Mauris sit <Button variant="link">link button</Button> dui sed
                 est gravida cursus vitae hendrerit sapien. Curabitur eu mauris
@@ -13,6 +15,8 @@ export default function Index() {
                 fermentum tellus. Aenean quis sollicitudin lacus. Donec bibendum
                 ipsum a massa porta, sed porta nunc rhoncus.
             </section>
+
+            <Heading>Curabitur ac ligula gravida, egestas nisi</Heading>
             <section className="mb-6">
                 Curabitur ac ligula gravida, egestas nisi a, efficitur ipsum.
                 Nam tempor erat eu dolor finibus rutrum. Donec nisl lectus,
@@ -31,6 +35,8 @@ export default function Index() {
                 arcu, vel scelerisque purus. Mauris cursus magna eget nibh
                 mattis, sed elementum nulla aliquet.
             </section>
+
+            <Heading>Nulla facilisi</Heading>
             <section className="mb-6">
                 Nulla facilisi. Proin odio velit, porta sed tincidunt sed,
                 vehicula sit amet ipsum. Aliquam eget eleifend arcu. Aliquam

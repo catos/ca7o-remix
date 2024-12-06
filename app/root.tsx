@@ -12,12 +12,15 @@ import {
     json,
     useLoaderData
 } from "@remix-run/react"
+import clsx from "clsx"
+import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
 
 import { getSupabase, getSupabaseEnv } from "./supabase/supabase.server"
 import { useGetSupabase } from "./supabase/use-get-supabase"
 
 import { Footer } from "./components/footer"
 import { Header } from "./components/header"
+import { themeSessionResolver } from "./sessions.server"
 import stylesheet from "./tailwind.css?url"
 
 export const meta: MetaFunction = () => {
@@ -36,16 +39,41 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const domainUrl = process.env.DOMAIN_URL
     const { session, headers } = await getSupabase({ request })
 
-    return json({ domainUrl, env, session }, { headers })
+    const { getTheme } = await themeSessionResolver(request)
+    const theme = getTheme()
+
+    return json({ domainUrl, env, session, theme }, { headers })
 }
 
-export default function App() {
-    const { domainUrl, env, session } = useLoaderData<typeof loader>()
+// Wrap your app with ThemeProvider.
+// `specifiedTheme` is the stored theme in the session storage.
+// `themeAction` is the action name that's used to change the theme in the session storage.
+export default function AppWithProviders() {
+    const data = useLoaderData<typeof loader>()
+    return (
+        <ThemeProvider
+            specifiedTheme={data.theme}
+            themeAction="/action/set-theme">
+            <App />
+        </ThemeProvider>
+    )
+}
+
+export function App() {
+    const {
+        domainUrl,
+        env,
+        session,
+        theme: dataTheme
+    } = useLoaderData<typeof loader>()
 
     const { supabase } = useGetSupabase({ env, session })
+    const [theme] = useTheme()
 
     return (
-        <html lang="en">
+        <html
+            lang="en"
+            className={clsx(theme)}>
             <head>
                 <meta charSet="utf-8" />
                 <meta
@@ -53,6 +81,7 @@ export default function App() {
                     content="width=device-width, initial-scale=1"
                 />
                 <Meta />
+                <PreventFlashOnWrongTheme ssrTheme={Boolean(dataTheme)} />
                 <Links />
             </head>
             <body>

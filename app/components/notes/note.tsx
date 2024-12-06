@@ -42,16 +42,13 @@ export function Note({ note, notes }: NoteProps) {
         new Date(),
         new Date(note.updated_at)
     )
-    const isNew = secondsAgo < 10
+    const isNew = note.id === "efd04289-181e-4837-8643-0cfef7bccf5c" // secondsAgo < 10
 
     const classes = twMerge(
-        "bg-slate-200",
-        children.length > 0 && "bg-slate-200",
-        isNew && "bg-slate-300",
-        "bg-slate-200",
-        children.length > 0 && "bg-slate-200",
-        isNew && "bg-slate-300",
-        note.parent_id && "w-full"
+        "bg-secondary",
+        // children.length > 0 && "bg-slate-200",
+        isNew && "border-4 border-slate-300"
+        // "bg-slate-200",
     )
 
     return (
@@ -61,7 +58,7 @@ export function Note({ note, notes }: NoteProps) {
             <Content>
                 <EditForm
                     trigger={
-                        <div className="cursor-pointer">
+                        <div className="cursor-pointer text-foreground">
                             <Markdown>{notePreview}</Markdown>
                         </div>
                     }
@@ -78,7 +75,9 @@ export function Note({ note, notes }: NoteProps) {
                 </div>
             </Content>
             <Footer>
-                <span className="text-sm">{updatedToNow}</span>
+                <span className="text-sm text-muted-foreground">
+                    {updatedToNow}
+                </span>
                 <CreateForm
                     trigger={
                         <Button
@@ -103,7 +102,7 @@ function Wrapper({
     children: React.ReactNode
 }) {
     const classes = twMerge(
-        "flex flex-col gap-2 p-4 rounded-lg relative flex-1",
+        "flex flex-col gap-2 p-4 rounded-lg relative flex-1 shadow-sm",
         className
     )
     return <div className={classes}>{children}</div>
@@ -123,7 +122,7 @@ function ChildNote({ note }: { note: NoteType }) {
     return (
         <EditForm
             trigger={
-                <div className="py-1 px-3 bg-slate-300 rounded-lg cursor-pointer">
+                <div className="py-1 px-3 rounded-lg cursor-pointer text-sm text-foreground">
                     {note.content}
                 </div>
             }

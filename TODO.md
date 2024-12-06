@@ -1,16 +1,14 @@
 # Inspiration
 
 https://www.youtube.com/watch?v=ocWc_FFc5jE&t=6193s&ab_channel=Rajtalkstech
+https://github.com/rajeshdavidbabu/remix-supabase-social
 
 https://ui.shadcn.com/blocks
 
 # TODOs
 
--   Updated at on notes, show seconds|minutes|hours ago if recently updated (use date-fns)
--   Notes: basic CRUD, listview and popover-view
 -   Shadcn: dark theme
--   Notes: todos
--   Notes: changelog
+-   Notes: changelog ?
 -   Recipe: markdown styling
 -   Recipe: search
 -   Recipe: infinite scroll

@@ -1,4 +1,10 @@
 import { useFetcher } from "@remix-run/react"
+import {
+    differenceInSeconds,
+    format,
+    formatDistance,
+    formatDistanceToNow
+} from "date-fns"
 import { EditIcon, PlusIcon, TrashIcon } from "lucide-react"
 import { twMerge } from "tailwind-merge"
 
@@ -30,38 +36,48 @@ export function Note({ note, notes }: NoteProps) {
             : note.content
 
     const children = notes.filter(n => n.parent_id === note.id)
+
+    const updatedToNow = formatDistanceToNow(new Date(note.updated_at))
+
+    const secondsAgo = differenceInSeconds(
+        new Date(),
+        new Date(note.updated_at)
+    )
+    const isNew = secondsAgo < 10
+
     const classes = twMerge(
-        children.length > 0 && "bg-slate-100",
+        "bg-slate-200",
+        children.length > 0 && "bg-slate-200",
+        isNew && "bg-slate-300",
         note.parent_id && "w-full"
     )
 
     return (
-        <Card
+        <Wrapper
             key={note.id}
             className={classes}>
-            <CardContent>
-                <div>
-                    <span>{note.updated_at}</span>
-                </div>
+            <Content>
                 <EditForm
                     trigger={
-                        <div>
+                        <div className="cursor-pointer">
                             <Markdown>{notePreview}</Markdown>
                         </div>
                     }
                     note={note}
                 />
 
-                {children.map(child => (
-                    <Note
-                        key={child.id}
-                        note={child}
-                        notes={notes}
-                    />
-                ))}
-            </CardContent>
+                <div className="flex flex-col gap-1">
+                    {children.map(child => (
+                        <ChildNote
+                            key={child.id}
+                            note={child}
+                        />
+                    ))}
+                </div>
+            </Content>
 
-            <CardFooter>
+            <Footer>
+                <span className="text-sm">{updatedToNow}</span>
                 <CreateForm
                     trigger={
                         <Button
@@ -73,12 +89,12 @@ export function Note({ note, notes }: NoteProps) {
                     }
                     parentId={note.id}
                 />
-            </CardFooter>
-        </Card>
+            </Footer>
+        </Wrapper>
     )
 }
 
-export function Card({
+function Wrapper({
     className,
     children
 }: {
@@ -86,20 +102,31 @@ export function Card({
     children: React.ReactNode
 }) {
     const classes = twMerge(
-        "flex flex-col bg-slate-200 rounded-lg relative w-60 cursor-pointer",
+        "flex flex-col gap-2 p-4 rounded-lg relative flex-1",
         className
     )
     return <div className={classes}>{children}</div>
 }
 
-export function CardContent({ children }: { children: React.ReactNode }) {
+function Content({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex flex-col gap-4 flex-1 p-4 break-words">
-            {children}
-        </div>
+        <div className="flex flex-col flex-1 gap-2 break-words">{children}</div>
     )
 }
 
-export function CardFooter({ children }: { children: React.ReactNode }) {
-    return <div className="px-2 pb-1 flex gap-1 justify-end">{children}</div>
+function Footer({ children }: { children: React.ReactNode }) {
+    return <div className="flex items-center justify-between">{children}</div>
+}
+
+function ChildNote({ note }: { note: NoteType }) {
+    return (
+        <EditForm
+            trigger={
+                <div className="py-1 px-3 bg-slate-300 rounded-lg cursor-pointer">
+                    {note.content}
+                </div>
+            }
+            note={note}
+        />
+    )
 }

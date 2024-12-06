@@ -46,11 +46,11 @@ export default function Notes() {
 
     const { columns, rootCount } = notesToColumns(notes)
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
             <CreateForm
                 trigger={
                     <Button className="mr-auto">
-                        <PlusIcon /> Create Note
+                        <PlusIcon /> Create a note
                     </Button>
                 }
             />
@@ -60,8 +60,7 @@ export default function Notes() {
                     {columns.map(col => (
                         <div
                             key={col.id}
-                            className="flex flex-col gap-4">
-                            {col.id}
+                            className="flex flex-auto w-64 flex-col gap-4">
                             {col.notes.map(note => (
                                 <Note
                                     key={note.id}

@@ -22,9 +22,11 @@ export function Header({ session }: { session: Session | null }) {
                         <li>
                             <HeaderLink to="/recipes">Recipes</HeaderLink>
                         </li>
-                        <li>
-                            <HeaderLink to="/notes">Notes</HeaderLink>
-                        </li>
+                        {session && (
+                            <li>
+                                <HeaderLink to="/notes">Notes</HeaderLink>
+                            </li>
+                        )}
                         <li>
                             <HeaderLink to="/about">About</HeaderLink>
                         </li>

@@ -4,7 +4,6 @@ import { Session } from "@supabase/supabase-js"
 
 import { Logo } from "./logo"
 import { Profile } from "./profile"
-import { ThemeToggle } from "./theme-toggle"
 
 export function Header({ session }: { session: Session | null }) {
     return (
@@ -37,9 +36,6 @@ export function Header({ session }: { session: Session | null }) {
                                 <HeaderLink to="/login">Login</HeaderLink>
                             )}
                         </li>
-                        <li>
-                            <ThemeToggle />
-                        </li>
                     </ul>
                 </nav>
             </div>
@@ -55,7 +51,7 @@ type HeaderLinkProps = {
 function HeaderLink({ to, children }: HeaderLinkProps) {
     return (
         <Link
-            className="px-2 text-foreground hover:text-orange-600"
+            className="px-2 hover:text-orange-600"
             to={to}>
             {children}
         </Link>

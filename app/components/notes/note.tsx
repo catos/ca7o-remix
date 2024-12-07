@@ -58,7 +58,7 @@ export function Note({ note, notes }: NoteProps) {
             <Content>
                 <EditForm
                     trigger={
-                        <div className="cursor-pointer text-foreground">
+                        <div className="cursor-pointer">
                             <Markdown>{notePreview}</Markdown>
                         </div>
                     }
@@ -122,7 +122,7 @@ function ChildNote({ note }: { note: NoteType }) {
     return (
         <EditForm
             trigger={
-                <div className="py-1 px-3 rounded-lg cursor-pointer text-sm text-foreground">
+                <div className="py-1 px-3 rounded-lg cursor-pointer text-sm">
                     {note.content}
                 </div>
             }

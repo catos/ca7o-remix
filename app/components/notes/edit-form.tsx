@@ -7,6 +7,7 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger
@@ -83,9 +84,6 @@ export function EditForm({
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Edit note: {note.id}</DialogTitle>
-                    <DialogDescription>
-                        It supports markdown! Blabla...
-                    </DialogDescription>
                 </DialogHeader>
                 <Textarea
                     ref={textareaRef}
@@ -95,18 +93,18 @@ export function EditForm({
                     placeholder="Type your note here..."
                 />
 
-                <Button
-                    size="iconSm"
-                    variant="ghost"
-                    className="rounded-full"
-                    onClick={handleDelete}>
-                    <TrashIcon />
-                </Button>
-                <Button
-                    disabled={isLoading}
-                    onClick={handleUpdate}>
-                    {isLoading ? "Saving..." : "Save"}
-                </Button>
+                <DialogFooter className="gap-2">
+                    <Button
+                        variant="destructive"
+                        onClick={handleDelete}>
+                        {"Delete"}
+                    </Button>
+                    <Button
+                        disabled={isLoading}
+                        onClick={handleUpdate}>
+                        {isLoading ? "Saving..." : "Save"}
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     )

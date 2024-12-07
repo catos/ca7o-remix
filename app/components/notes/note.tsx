@@ -65,7 +65,7 @@ export function Note({ note, notes }: NoteProps) {
                     note={note}
                 />
 
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
                     {children.map(child => (
                         <ChildNote
                             key={child.id}
@@ -122,7 +122,7 @@ function ChildNote({ note }: { note: NoteType }) {
     return (
         <EditForm
             trigger={
-                <div className="py-1 px-3 rounded-lg cursor-pointer text-sm">
+                <div className="py-1 px-3 rounded-lg cursor-pointer text-sm border">
                     {note.content}
                 </div>
             }

@@ -45,6 +45,7 @@ export default function Notes() {
     // })
 
     const { columns, rootCount } = notesToColumns(notes)
+
     return (
         <div className="flex flex-col gap-4">
             <CreateForm

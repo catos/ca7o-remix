@@ -1,12 +1,10 @@
-import { Form, useFetcher } from "@remix-run/react"
-import { TrashIcon } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { useFetcher } from "@remix-run/react"
+import { useRef, useState } from "react"
 
 import { Button } from "~/components/ui/button"
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -60,22 +58,6 @@ export function EditForm({
         textareaRef.current?.blur()
     }
 
-    // TODO: understand and maybe create custom hook for this ?
-    useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = "96px" // Reset height - important to shrink on delete
-            const computed = window.getComputedStyle(textareaRef.current)
-            const height =
-                textareaRef.current.scrollHeight +
-                parseInt(computed.getPropertyValue("border-top-width")) +
-                parseInt(computed.getPropertyValue("border-bottom-width"))
-            textareaRef.current.style.height = `${height}px`
-        }
-    }, [content])
-
-    // TODO: trigger only when textarea is focused
-    // useOnKeyPress(isFocused, handleSubmit)
-
     return (
         <Dialog
             open={open}
@@ -86,7 +68,6 @@ export function EditForm({
                     <DialogTitle>Edit note: {note.id}</DialogTitle>
                 </DialogHeader>
                 <Textarea
-                    ref={textareaRef}
                     name="content"
                     value={content}
                     onChange={e => setContent(e.target.value)}

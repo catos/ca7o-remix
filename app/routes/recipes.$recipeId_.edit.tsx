@@ -107,11 +107,13 @@ export default function Edit() {
                 <Textarea
                     label="Ingredients"
                     name="ingredients"
+                    height={64 * 2}
                     defaultValue={recipe.ingredients}
                 />
                 <Textarea
                     label="Instructions"
                     name="instructions"
+                    height={64 * 3}
                     defaultValue={recipe.instructions}
                 />
                 <Button

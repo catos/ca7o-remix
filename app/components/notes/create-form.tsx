@@ -1,5 +1,5 @@
 import { Form, useFetcher } from "@remix-run/react"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 
 import { Button } from "~/components/ui/button"
 import {
@@ -23,7 +23,6 @@ export function CreateForm({
 
     // TODO: use isFocused ?!?
     const [isFocused, setIsFocused] = useState(false)
-    const textareaRef = useRef<HTMLTextAreaElement>(null)
 
     const fetcher = useFetcher()
     const isCreating = fetcher.state !== "idle"
@@ -47,25 +46,7 @@ export function CreateForm({
         // TODO: check if success before closing!
         setOpen(false)
         setContent("")
-        // setIsFocused(false)
-        textareaRef.current?.blur()
     }
-
-    // TODO: understand and maybe create custom hook for this ?
-    useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = "38px" // Reset height - important to shrink on delete
-            const computed = window.getComputedStyle(textareaRef.current)
-            const height =
-                textareaRef.current.scrollHeight +
-                parseInt(computed.getPropertyValue("border-top-width")) +
-                parseInt(computed.getPropertyValue("border-bottom-width"))
-            textareaRef.current.style.height = `${height}px`
-        }
-    }, [content])
-
-    // TODO: trigger only when textarea is focused
-    // useOnKeyPress(isFocused, handleSubmit)
 
     return (
         <Dialog
@@ -84,7 +65,6 @@ export function CreateForm({
                     onSubmit={handleSubmit}
                     className="flex flex-col gap-4">
                     <Textarea
-                        ref={textareaRef}
                         name="content"
                         value={content}
                         onChange={e => setContent(e.target.value)}

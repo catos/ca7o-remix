@@ -44,7 +44,9 @@ export default function Notes() {
     //     preventDefault: true
     // })
 
-    const { columns, rootCount } = notesToColumns(notes)
+    // const { columns, rootCount } = notesToColumns(notes)
+
+    const rootNotes = notes.filter(note => !note.parent_id)
 
     return (
         <div className="flex flex-col gap-4">
@@ -56,20 +58,14 @@ export default function Notes() {
                 }
             />
 
-            {rootCount > 0 ? (
-                <div className="flex gap-4">
-                    {columns.map(col => (
-                        <div
-                            key={col.id}
-                            className="flex flex-auto w-64 flex-col gap-4">
-                            {col.notes.map(note => (
-                                <Note
-                                    key={note.id}
-                                    note={note}
-                                    notes={notes}
-                                />
-                            ))}
-                        </div>
+            {rootNotes.length > 0 ? (
+                <div className="grid gap-4 md:grid-cols-3">
+                    {rootNotes.map(note => (
+                        <Note
+                            key={note.id}
+                            note={note}
+                            notes={notes}
+                        />
                     ))}
                 </div>
             ) : (

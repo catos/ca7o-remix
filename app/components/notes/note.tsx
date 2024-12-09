@@ -4,7 +4,7 @@ import {
     formatDistance,
     formatDistanceToNow
 } from "date-fns"
-import { EditIcon, PlusIcon, TrashIcon } from "lucide-react"
+import { EditIcon, EllipsisVertical, PlusIcon, TrashIcon } from "lucide-react"
 import { twMerge } from "tailwind-merge"
 
 import { Markdown } from "~/components/markdown"
@@ -31,7 +31,7 @@ type NoteProps = {
 export function Note({ note, notes }: NoteProps) {
     const notePreview =
         note.content.length > 300
-            ? note.content.slice(0, 100) + "..."
+            ? note.content.slice(0, 150) + "..."
             : note.content
 
     const children = notes.filter(n => n.parent_id === note.id)
@@ -42,14 +42,9 @@ export function Note({ note, notes }: NoteProps) {
         new Date(),
         new Date(note.updated_at)
     )
-    const isNew = secondsAgo < 10
 
-    const classes = twMerge(
-        "bg-secondary",
-        // children.length > 0 && "bg-slate-200",
-        isNew && "border"
-        // "bg-slate-200",
-    )
+    const isNew = secondsAgo < 10
+    const classes = twMerge("bg-secondary", isNew && "border")
 
     return (
         <Wrapper
@@ -65,17 +60,19 @@ export function Note({ note, notes }: NoteProps) {
                     note={note}
                 />
 
-                <div className="flex flex-col gap-2">
-                    {children.map(child => (
-                        <ChildNote
-                            key={child.id}
-                            note={child}
-                        />
-                    ))}
-                </div>
+                {children.length > 0 && (
+                    <div className="flex flex-col gap-2">
+                        {children.map(child => (
+                            <ChildNote
+                                key={child.id}
+                                note={child}
+                            />
+                        ))}
+                    </div>
+                )}
             </Content>
             <Footer>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground mr-auto">
                     {updatedToNow}
                 </span>
                 <CreateForm
@@ -89,6 +86,12 @@ export function Note({ note, notes }: NoteProps) {
                     }
                     parentId={note.id}
                 />
+                <Button
+                    size="iconSm"
+                    variant="ghost"
+                    className="rounded-full">
+                    <EllipsisVertical />
+                </Button>
             </Footer>
         </Wrapper>
     )
@@ -102,7 +105,7 @@ function Wrapper({
     children: React.ReactNode
 }) {
     const classes = twMerge(
-        "flex flex-col gap-2 p-4 rounded-lg relative flex-1 shadow-sm",
+        "group flex flex-col rounded-lg relative flex-1 shadow-sm transition-opacity ease-in-out duration-150",
         className
     )
     return <div className={classes}>{children}</div>
@@ -110,20 +113,31 @@ function Wrapper({
 
 function Content({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex flex-col flex-1 gap-2 break-words">{children}</div>
+        <div className="flex flex-col flex-1 gap-2 p-4 break-words">
+            {children}
+        </div>
     )
 }
 
 function Footer({ children }: { children: React.ReactNode }) {
-    return <div className="flex items-center justify-between">{children}</div>
+    return (
+        <div className="invisible group-hover:visible flex items-center gap-2 px-4 py-2">
+            {children}
+        </div>
+    )
 }
 
 function ChildNote({ note }: { note: NoteType }) {
+    const content =
+        note.content.length > 24
+            ? note.content.substring(0, 24) + "..."
+            : note.content
+
     return (
         <EditForm
             trigger={
-                <div className="py-1 px-3 rounded-lg cursor-pointer text-sm border">
-                    {note.content}
+                <div className="py-1 px-3 rounded-lg cursor-pointer text-sm border max-h-8">
+                    {content}
                 </div>
             }
             note={note}
